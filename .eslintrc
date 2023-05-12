@@ -1,0 +1,43 @@
+{
+  "root": true,
+  "extends": ["eslint:recommended",
+    "plugin:vue/vue3-recommended",
+    "@vue/typescript/recommended"],
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "parser": "@typescript-eslint/parser"
+  },
+  "rules": {
+    "indent": ["error", 2],
+    "template-curly-spacing": ["error", "always"],
+    "array-bracket-spacing": ["error", "always"],
+    "object-curly-spacing": ["error", "always"],
+    "arrow-spacing": "error",
+    "comma-spacing": [
+      "error",
+      {
+        "after": true
+      }
+    ],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "no-duplicate-imports": "error",
+    "no-console": [
+      "warn",
+      {
+        "allow": ["warn", "error", "info"]
+      }
+    ],
+    "no-ex-assign": "off",
+    "vue/comment-directive": "off",
+    "vue/multi-word-component-names": "off",
+    "no-case-declarations": "off",
+    "vue/require-default-prop": "off",
+    "no-undef": "off"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-recommended-vue",
+    "stylelint-config-recess-order"
+  ],
+  "plugins": [
+    "stylelint-scss",
+    "stylelint-declaration-strict-value"
+  ],
+  "ignoreFiles": [
+    "dist/",
+    "node_modules/",
+    "src/styles/normalize.scss",
+    "src/styles/vuetify/**/*.scss"
+  ],
+  "rules": {
+    "string-no-newline": null,
+    "scss/dollar-variable-empty-line-before": null,
+    "scss/double-slash-comment-whitespace-inside": "always",
+    "scale-unlimited/declaration-strict-value": ["color", {
+      "ignoreKeywords": ["currentColor", "transparent", "inherit"],
+      "disableFix": true
+    }],
+    "declaration-block-trailing-semicolon": null,
+    "at-rule-no-unknown": null,
+    "scss/operator-no-unspaced": null,
+    "selector-class-pattern": null,
+    "scss/at-mixin-argumentless-call-parentheses": null,
+    "function-no-unknown": null
+  }
+}
