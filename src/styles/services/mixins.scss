@@ -1,0 +1,6 @@
+@use "sass:math";
+@import "variables";
+
+@function px-to-rem($size-in-px) {
+  @return math.div($size-in-px, $px-rem-ratio) * 1rem;
+}
