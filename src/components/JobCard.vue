@@ -7,30 +7,37 @@
     <div class="container">
       <div class="position__logo">
         <app-logo
-          :avatar="position.logo"
+          class="logo"
+          :logo="position.logo"
         />
       </div>
       <div class="container__column column-left">
+        <hr class="container__line">
+
         <div class="position__company">
           {{ position.company }}
-          <app-button
+          <button
             v-if="position.new"
             class="position__company-new"
-            title="NEW!"
-          />
-          <app-button
+          >
+            NEW!
+          </button>
+          <button
             v-if="position.featured"
             class="position__company-featured"
-            title="FEATURED"
-          />
+          >
+            FEATURED
+          </button>
         </div>
         <div class="position__position">
           {{ position.position }}
         </div>
-        <div class="position__location">
-          {{ position.postedAt }}
-          {{ position.contract }}
-          {{ position.location }}
+        <div class="position__information">
+          <span>{{ position.postedAt }}</span>
+          <svg-dot />
+          <span>{{ position.contract }}</span>
+          <svg-dot />
+          <span>{{ position.location }}</span>
         </div>
       </div>
 
@@ -38,14 +45,12 @@
         <div
           v-for="(buttonTitle, index) in buttonTitles"
           :key="index"
-          class="buttons"
         >
           <app-button
             v-if="buttonTitle"
             :key="position.id"
-            class="button"
             :title="buttonTitle"
-            @click="handleButtonClick(buttonTitle)"
+            :handle-click="handleButtonClick"
           />
         </div>
       </div>
@@ -53,18 +58,18 @@
   </app-container>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue';
 import AppLogo from './AppLogo.vue';
 import AppContainer from './AppContainer.vue';
 import AppButton from './AppButton.vue';
-import { ref } from 'vue';
-import data from '../../data.json'
+import SvgDot from './SvgDot.vue';
 
 interface JobCardProps {
   position: JobPosition;
+  handleButtonClick: (clickedButton: string) => void;
 }
 
 const props = defineProps<JobCardProps>()
-// console.log('props.position', props.position)
 
 const buttonTitles = ref([
   props.position.role,
@@ -72,45 +77,20 @@ const buttonTitles = ref([
   ...(props.position.languages || []),
   ...(props.position.tools || [])
 ]);
-
-// console.log('buttonTitles', buttonTitles.value) // array of strings
-
-const clickedButtons = ref([])
-
-const handleButtonClick = (buttonTitle: string) => {
-  if (clickedButtons.value.includes(buttonTitle)) {
-    clickedButtons.value = clickedButtons.value.filter((btn) => btn !== buttonTitle);
-  } else {
-    clickedButtons.value.push(buttonTitle);
-    // console.log('clickedButtons', clickedButtons.value)
-  }
-}
-const filteredData = ref([])
-data.forEach(obj => {
-  const role = obj.role;
-  if (!filteredData.value.includes(role)) {
-    filteredData.value.push(role);
-  }
-})
-
-// const filteredData = ref(() => {
-//   return buttonTitles.value.filter((button) => clickedButtons.value.includes(button));
-// });
-
-// watch(filteredData, () => console.log('filteredData', filteredData.value))
-
 </script>
 
 <style lang="scss" scoped>
   .container {
     display: flex;
 
-    & > * {
-      flex: 1 0;
+    @include w-to($screen-tablet) {
+      position: relative;
+      display: flex;
+      flex-direction: column-reverse;
     }
 
-    &__logo {
-      margin-right: px-to-rem(10);
+    & > * {
+      flex: 1 0;
     }
 
     &__column {
@@ -118,65 +98,95 @@ data.forEach(obj => {
     }
   }
 
-    .column-left {
-      display: flex;
-      flex-direction: column;
-      gap: px-to-rem(9);
+  .column-left {
+    display: flex;
+    flex-direction: column;
+    gap: px-to-rem(9);
+    justify-content: flex-start;
+  }
+
+  .column-right {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: flex-end;
+    color: $greenish;
+
+    @include w-to($screen-tablet) {
       justify-content: flex-start;
+      margin-top: px-to-rem(5);
     }
+  }
 
-    .column-right {
+  .container__line {
+    display: block;
+    margin-top: px-to-rem(10);
+    content: '';
+    border-top: 1.5px solid $dark-grayish-cyan;
+
+    @include w-from($screen-tablet) {
+      display: none;
+    }
+  }
+
+  .position {
+    &__logo {
       display: flex;
-      flex-flow: row wrap;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: center;
+
+      @include w-to($screen-tablet) {
+        position: absolute;
+        top: -55px;
+        left: 0;
+      }
+    }
+
+    &__company {
+      display: flex;
+      flex-direction: row;
+      gap: px-to-rem(6);
+      align-items: center;
+      justify-content: flex-start;
+      font-weight: 700;
       color: $greenish;
-    }
 
-    .position {
-      &__logo {
+      &-new {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: px-to-rem(10);
-      }
-
-      &__company {
+        padding: px-to-rem(3) px-to-rem(5);
+        font-size: $font-size / 1.4;
         font-weight: 700;
-        color: $greenish;
-
-        &-new {
-          padding: px-to-rem(3) px-to-rem(5);
-          font-size: $font-size / 1.4;
-          font-weight: 700;
-          color: $white !important;
-          background-color: $greenish;
-          border-radius: px-to-rem(20);
-        }
-
-        &-featured {
-          padding: px-to-rem(3) px-to-rem(5);
-          font-size: $font-size / 1.4;
-          font-weight: 700;
-          color: $white !important;
-          background-color: $black;
-          border-radius: px-to-rem(20);
-        }
+        color: $white;
+        background-color: $greenish;
+        border: none;
+        border-radius: px-to-rem(20);
       }
 
-      &__position {
+      &-featured {
+        padding: px-to-rem(3) px-to-rem(5);
+        font-size: $font-size / 1.4;
         font-weight: 700;
-      }
-
-      &__location {
-        display: flex;
-        flex-direction: row;
-        gap: px-to-rem(10);
-        color: $dark-grayish-cyan;
+        color: $white !important;
+        background-color: $black;
+        border-radius: px-to-rem(20);
       }
     }
 
-    .button {
-      color: $greenish;
+    &__position {
+      font-weight: 700;
     }
+
+    &__information {
+      display: flex;
+      flex-direction: row;
+      gap: px-to-rem(5);
+      color: $dark-grayish-cyan;
+    }
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 </style>

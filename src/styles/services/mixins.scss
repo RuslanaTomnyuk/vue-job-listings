@@ -1,6 +1,18 @@
 @use "sass:math";
 @import "variables";
 
+@mixin w-from($screen) {
+  @media (min-width: $screen) {
+    @content;
+  }
+}
+
+@mixin w-to($screen) {
+  @media (max-width: $screen - 1px) {
+    @content;
+  }
+}
+
 @function px-to-rem($size-in-px) {
   @return math.div($size-in-px, $px-rem-ratio) * 1rem;
 }

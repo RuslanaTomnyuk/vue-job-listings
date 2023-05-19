@@ -30,7 +30,6 @@ withDefaults(defineProps<AppContainerProps>(), {
   titleSize: 'normal',
   isBorderRounded: true
 })
-
 </script>
 
 <style lang="scss" scoped>
@@ -39,34 +38,25 @@ withDefaults(defineProps<AppContainerProps>(), {
   gap: px-to-rem(20);
   background-color: $color-bg-page;
 
-  &--bigPaddings {
+    &--bigPaddings {
     padding:  px-to-rem(20);
 
-    // @include w-to($screen-desktop-small) {
-    //  padding: px-to-rem(20);
-    // }
+     @include w-to($screen-tablet) {
+       padding: px-to-rem(10);
+     }
   }
 
   &--normalPaddings {
     padding: px-to-rem(20);
   }
 
-  &--smallPaddings {
-    padding: px-to-rem(15);
-  }
-
   &--rounded {
-    border-radius: px-to-rem(10);
+    border-radius: px-to-rem(5);
   }
 
   &--shadowed {
-    box-shadow: 0 0 20px rgb(16 24 40 / 10%);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     transition: all 0.15s;
-  }
-
-  &--clickable {
-    cursor: pointer;
-    user-select: none;
   }
 }
 </style>

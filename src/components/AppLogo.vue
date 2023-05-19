@@ -1,50 +1,34 @@
 <template>
   <img
-    v-if="avatar"
-    :class="avatarClass"
-    :src="avatar"
-    alt="Avatar"
+    v-if="logo"
+    class="logo"
+    :src="logo"
+    alt="Logo"
   >
 </template>
 
 <script lang="ts" setup>
-interface AppProfileAvatarProps {
-  avatar?: string;
-  firstName?: string;
-  lastName?: string;
-  sizeType?: 'normal' | 'big'
+interface AppLogoProps {
+  logo?: string;
 }
 
-const props = withDefaults(defineProps<AppProfileAvatarProps>(), {
-  sizeType: 'normal'
-})
-
-const avatarClass = `avatar avatar--${ props.sizeType }`
-
+defineProps<AppLogoProps>()
 </script>
 
 <style lang="scss" scoped>
-.avatar {
+.logo {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
-
-  // font: #{px-to-rem(16)}/#{px-to-rem(24)} #{var(--font-family)};
-  // color: var(--color-text-reverse-secondary);
-  // background-color: var(--color-accent-secondary);
+  width: px-to-rem(50);
+  height: px-to-rem(50);
+  padding: px-to-rem(10);
   border-radius: 50%;
   object-fit: cover;
 
-
-  &--normal {
+  @include w-to($screen-tablet) {
     width: px-to-rem(40);
     height: px-to-rem(40);
-  }
-
-  &--big {
-    width: px-to-rem(65);
-    height: px-to-rem(65);
   }
 }
 </style>

@@ -3,12 +3,16 @@
     v-for="position in positions"
     :key="position.id"
     :position="position"
+    :handle-button-click="handleButtonClick"
   />
 </template>
 
 <script setup lang="ts">
-import data from '../../data.json'
-
 import JobCard from './JobCard.vue';
-const positions = data
+interface JobListProps {
+  positions: JobPosition[];
+  handleButtonClick: (clickedButton: string) => void;
+}
+
+defineProps<JobListProps>()
 </script>
