@@ -48,12 +48,11 @@ The categories are:
 
 ### Screenshot
 
-![](./screenshot.jpg)
-![desktop.png](desktop.png)
-![desktop-filter.png](desktop-filter.png)
-![tablet-filters.png](tablet-filters.png)
-![mobile.png](mobile.png)
-![mobile-filters.png](mobile-filters.png)
+![](./design/desktop.png)
+![desktop-filter.png](./design/desktop-filter.png)
+![tablet-filters.png](./design/tablet-filters.png)
+![mobile.png](./design/mobile.png)
+![mobile-filters.png](./design/mobile-filters.png)
 
 #### Links
 
