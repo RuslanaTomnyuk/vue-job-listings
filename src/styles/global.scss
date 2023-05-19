@@ -1,7 +1,6 @@
 :root {
-  // --font-family: #{$font-family};
-  font: px-to-rem(15);
   font-family: $font-family;
+  font: px-to-rem(15);
   font-weight: 500;
 }
 
@@ -12,7 +11,5 @@
 
 .body {
   display: flex;
-
-  // width: 100%;
-  height: auto;
+  height: 100vh;
 }

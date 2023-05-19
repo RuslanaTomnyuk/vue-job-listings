@@ -9,5 +9,10 @@
   background-image: url("/images/bg-header-desktop.svg");
   background-repeat: no-repeat;
   background-size:  cover;
+
+  @include w-to($screen-tablet) {
+    height: calc(0.15 * 100vh);
+    background-image: url("/images/bg-header-mobile.svg");
+  }
 }
 </style>
