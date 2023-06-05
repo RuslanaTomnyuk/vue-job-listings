@@ -37,13 +37,15 @@ withDefaults(defineProps<AppButtonProps>(), {
   .button {
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: center;
-    margin: px-to-rem(5);
+    align-items: center;
+    padding: px-to-rem(3) px-to-rem(5);
 
     &__title {
       display: flex;
-      padding: px-to-rem(5);
+      justify-content: center;
+      align-items: center;
+      padding:  px-to-rem(5);
       font: $font-default-bold;
       color: $color-text-primary;
       cursor: pointer;
@@ -53,6 +55,8 @@ withDefaults(defineProps<AppButtonProps>(), {
       transition: background-color 0.5s;
 
       &--with-left-border-radius {
+        display: flex;
+        align-items: center;
         border-radius: 5px 0 0 5px;
       }
 
@@ -67,6 +71,8 @@ withDefaults(defineProps<AppButtonProps>(), {
 
     &__close {
       display: flex;
+      justify-content: center;
+      align-items: center;
       padding: px-to-rem(5);
       font: $font-default-bold;
       color: $color-text-secondary;
