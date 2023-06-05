@@ -3,7 +3,7 @@
     v-for="position in positions"
     :key="position.id"
     :position="position"
-    :handle-button-click="handleButtonClick"
+    :handle-add-to-filter="handleAddToFilter"
   />
 </template>
 
@@ -11,7 +11,7 @@
 import JobCard from './JobCard.vue';
 interface JobListProps {
   positions: JobPosition[];
-  handleButtonClick: (clickedButton: string) => void;
+  handleAddToFilter: (filter: string) => void;
 }
 
 defineProps<JobListProps>()

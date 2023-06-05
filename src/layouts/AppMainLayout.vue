@@ -1,8 +1,7 @@
 <template>
+  <app-header />
   <main
-    :class="{
-      [`page page--${widthType}`]: true,
-    }"
+    class="page"
   >
     <div class="page__content">
       <slot />
@@ -12,15 +11,7 @@
 
 <script setup lang="ts">
 
-interface AppMainLayoutProps {
-  title?: string;
-  widthType?: 'normal' | 'wide' | 'narrow';
-  withNoPaddingsOnMobile?: boolean;
-}
-
-withDefaults(defineProps<AppMainLayoutProps>(), {
-  widthType: 'normal',
-})
+import AppHeader from '../components/AppHeader.vue';
 
 </script>
 
@@ -30,18 +21,16 @@ withDefaults(defineProps<AppMainLayoutProps>(), {
   flex-direction: column;
   gap: px-to-rem(30);
   max-width: 100%;
-  height: 100vh;
-  padding: px-to-rem(30) px-to-rem(50);
-  background-color: $light-green;
+  max-height: 100%;
+  padding: $main-page-padding;
+
+  @include w-to($screen-tablet) {
+    padding: $main-page-padding-mobile;
+  }
 
   &__content {
     display: flex;
     flex-direction: column;
-    gap: px-to-rem(20);
-
-    @include w-to($screen-tablet) {
-      gap: px-to-rem(40);
-    }
   }
 }
 </style>

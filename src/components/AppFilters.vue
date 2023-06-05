@@ -1,27 +1,26 @@
 <template>
   <div class="filters">
     <div
-      v-for="(clickedButton, index) in clickedButtons"
-      :key="index"
+      v-for="filter in filters"
+      :key="filter"
     >
       <app-button
-        v-if="clickedButton"
-        :key="index"
+        v-if="filter"
+        :key="filter"
         with-close
         :with-hover="withHover"
         :with-left-border-radius="withLeftBorderRadius"
-        class="filters__buttons"
-        :title="clickedButton"
-        @click="handleRemove(clickedButton)"
+        :title="filter"
+        :handle-click="() => handleRemove(filter)"
       />
     </div>
   </div>
   <div class="filters__clear">
     <button
-      v-if="clickedButtons.length"
+      v-if="filters.length"
       class="filters__clear-button"
       title="Clear"
-      @click="handleButtonClear"
+      @click="handleFiltersClear"
     >
       Clear
     </button>
@@ -32,9 +31,9 @@
 import AppButton from './AppButton.vue';
 
 interface FiltersProps {
-  clickedButtons: string[];
-  handleButtonClear: () => void;
-  handleRemove: (clickedButton: string) => void;
+  filters: string[];
+  handleFiltersClear: () => void;
+  handleRemove: (filter: string) => void;
   withClose: boolean;
   withHover: boolean;
   withLeftBorderRadius: boolean;
@@ -43,7 +42,6 @@ interface FiltersProps {
 withDefaults(defineProps<FiltersProps>(), {
   withLeftBorderRadius: true
 })
-
 </script>
 
 <style lang="scss" scoped>
@@ -58,13 +56,11 @@ withDefaults(defineProps<FiltersProps>(), {
       justify-content: center;
 
       &-button {
-        font-family: $font-family;
-        font-size: $font-size;
-        font-weight: 700;
+        font: $font-default-bold;
         color: $dark-grayish-cyan;
         text-decoration: underline;
         cursor: pointer;
-        background-color: $color-bg-page;
+        background-color: $color-bg-block;
         border: none;
       }
     }

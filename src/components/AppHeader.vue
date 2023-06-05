@@ -5,7 +5,7 @@
 <style lang="scss">
 .header {
   height: calc(0.1 * 100vh);
-  background-color: $greenish;
+  background-color: $color-bg-secondary;
   background-image: url("/images/bg-header-desktop.svg");
   background-repeat: no-repeat;
   background-size:  cover;
