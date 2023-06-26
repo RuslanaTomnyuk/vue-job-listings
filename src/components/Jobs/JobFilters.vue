@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import AppButton from './AppButton.vue';
+import AppButton from '../AppButton.vue';
 
 interface FiltersProps {
   filters: string[];

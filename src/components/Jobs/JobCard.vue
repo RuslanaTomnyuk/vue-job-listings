@@ -28,7 +28,6 @@
             >
               NEW!
             </div>
-
             <div
               v-if="position.featured"
               class="container__company container__company--featured"
@@ -41,7 +40,6 @@
           >
             {{ position.position }}
           </div>
-
           <div
             class="container__information"
           >
@@ -77,9 +75,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import AppLogo from './AppLogo.vue';
-import AppContainer from './AppContainer.vue';
-import AppButton from './AppButton.vue';
+import AppLogo from '../AppLogo.vue';
+import AppContainer from '../AppContainer.vue';
+import AppButton from '../AppButton.vue';
 
 interface JobCardProps {
   position: JobPosition;
@@ -94,17 +92,19 @@ const preparedData = [
   props.position.location,
 ];
 
-const jobFilters = ref([
+const jobFilters = ref<(string | PositionLanguage | PositionTools)[]>([
   props.position.role,
   props.position.level,
   ...(props.position.languages || []),
   ...(props.position.tools || [])
 ]);
+
 </script>
 
 <style lang="scss" scoped>
   .container {
     display: flex;
+    cursor: pointer;
 
     @include w-to($screen-tablet) {
       position: relative;

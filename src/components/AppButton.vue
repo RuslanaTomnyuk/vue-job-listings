@@ -3,7 +3,7 @@
     <button
       :class="{'button__title': true, 'button__title--with-hover': withHover, 'button__title--with-left-border-radius': withLeftBorderRadius}"
       type="button"
-      @click="() => handleClick(title)"
+      @click.stop="() => handleClick(title)"
     >
       {{ title }}
     </button>
@@ -37,14 +37,14 @@ withDefaults(defineProps<AppButtonProps>(), {
   .button {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     padding: px-to-rem(3) px-to-rem(5);
 
     &__title {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       padding:  px-to-rem(5);
       font: $font-default-bold;
       color: $color-text-primary;
@@ -71,8 +71,8 @@ withDefaults(defineProps<AppButtonProps>(), {
 
     &__close {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       padding: px-to-rem(5);
       font: $font-default-bold;
       color: $color-text-secondary;
