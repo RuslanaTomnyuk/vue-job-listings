@@ -1,7 +1,7 @@
 <template>
-  <app-main-layout v-if="position">
+  <app-main-layout v-if="jobPositionById">
     <h1>
-      {{ position.position }}
+      {{ jobPositionById.position }}
     </h1>
     <app-container
       paddings-size="normal"
@@ -15,7 +15,7 @@
           class="container__logo"
         >
           <app-logo
-            :logo="position.logo"
+            :logo="jobPositionById.logo"
             placeholder="logo"
           />
         </div>
@@ -26,33 +26,33 @@
           <div
             class="container__company"
           >
-            {{ position.company }}
+            {{ jobPositionById.company }}
             <div
-              v-if="position.new"
+              v-if="jobPositionById.new"
               class="container__company container__company--new"
             >
-              NEW!
+              {{ $t("jobCard.new") }}
             </div>
 
             <div
-              v-if="position.featured"
+              v-if="jobPositionById.featured"
               class="container__company container__company--featured"
             >
-              FEATURED
+              {{ $t("jobCard.featured") }}
             </div>
           </div>
           <div
             class="container__position"
           >
-            {{ position.position }}
+            {{ jobPositionById.position }}
           </div>
           <div
             class="container__information"
           >
             <div class="container__dot" />
             <div
-              v-for="(property, index) in preparedData"
-              :key="index"
+              v-for="(property) in preparedData"
+              :key="property"
               :title="property"
               class="container__information container__information--dot"
             >
@@ -76,38 +76,31 @@
     />
   </div>
 </template>
-<script setup>
+
+<script setup lang="ts">
+import { computed } from 'vue';
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
 import AppLogo from '@/components/AppLogo.vue';
 import AppContainer from '@/components/AppContainer.vue';
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { useFetchJobs } from '@/composables/useFetchJobs';
-import router from '@/router/router';
 import AppButton from '@/components/AppButton.vue';
+import { useRoute } from 'vue-router';
+import { useStore } from '@/composables/useStore.ts';
 
-const { data: jobs } = useFetchJobs()
+import router from '@/router/router';
+
+const store = useStore()
 const route = useRoute();
-const jobId = route.params.id;
-const position = ref(null)
+const jobId = +route.params.id;
 
-const preparedData = ref([]);
+const jobPositionById = computed<JobPosition>(() => store.getters.getJobPositionById(jobId))
 
-watch(jobs, () => {
-  if (jobs.value) {
-    position.value = jobs.value.find(position => position.id === +jobId);
-  }
-})
+const preparedData = computed(() => jobPositionById.value && [
+  jobPositionById.value.postedAt,
+  jobPositionById.value.contract,
+  jobPositionById.value.location,
+] )
 
-watch(position, () => {
-  if (position.value) {
-    return preparedData.value = [
-      position.value.postedAt,
-      position.value.contract,
-      position.value.location,
-    ]
-  }
-})
+store.dispatch('fetchJobList')
 </script>
 
 <style lang="scss" scoped>

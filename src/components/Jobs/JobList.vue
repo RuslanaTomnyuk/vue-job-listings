@@ -2,9 +2,11 @@
   <app-main-layout>
     <div class="page__wrapper">
       <app-loader v-if="isLoading" />
-      <div v-if="error">
-        {{ error }}
-      </div>
+      <h1
+        v-if="error"
+      >
+        {{ error.message || error }}
+      </h1>
       <div
         v-if="filters.length"
       >
@@ -13,59 +15,47 @@
           with-border
           with-shadow
         >
-          <job-filters
+          <job-list-filters
             :filters="filters"
-            :handle-filters-clear="handleFiltersClear"
-            :handle-remove="handleRemove"
           />
         </app-container>
       </div>
-      <job-card
+      <job-list-card
         v-for="position in filteredJobList"
         :key="position.id"
         :position="position"
         :handle-add-to-filter="handleAddToFilter"
-        @click="router.push(`/job-list/position/${position.id}`)"
+        @click="router.push(`/job-list/${position.id}`)"
       />
     </div>
   </app-main-layout>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import AppMainLayout from '../../layouts/AppMainLayout.vue';
-import JobFilters from './JobFilters.vue';
+import { computed } from 'vue';
+import router from '@/router/router.ts';
+
+import AppMainLayout from '@/layouts/AppMainLayout.vue';
+import JobListFilters from '@/components/Jobs/JobListFilters.vue';
+import JobListCard from '@/components/Jobs/JobListCard.vue';
 import AppContainer from '../AppContainer.vue';
-import JobCard from './JobCard.vue';
-
-const filters = ref([])
-import { useFetchJobs } from '../../composables/useFetchJobs.ts';
 import AppLoader from '../AppLoader.vue';
-import router from '../../router/router.ts';
+import { useStore } from '@/composables/useStore.ts';
 
-const { data: positions, error, isLoading } = useFetchJobs()
+const store = useStore()
+const jobs = computed(() => store.state.jobs)
+const filters = computed<string[]>(() => jobs.value.filters)
+const error = computed(() => jobs.value.error)
+const isLoading = computed(() => jobs.value.isLoading)
 
 const handleAddToFilter = (jobFilter: string) => {
-  if (filters.value.includes(jobFilter)) {
-    filters.value.filter((btn) => btn !== jobFilter);
-  } else {
-    filters.value.push(jobFilter);
+  if (!filters.value.includes(jobFilter)) {
+    store.dispatch('addToFilters', jobFilter)
   }
 }
 
-const filteredJobList = computed(() =>
-  positions.value.filter(position => {
-    const positionFilters = [].concat(position.role, position.level, ...position.languages, ...position.tools);
-
-    return filters.value.every(filter => positionFilters.includes(filter));
-  })
-)
-
-const handleRemove = (filter: string) => {
-  filters.value = filters.value.filter((btn) => btn !== filter);
-}
-
-const handleFiltersClear = () => filters.value = []
+const filteredJobList = computed(() => store.getters.filteredJobList)
+store.dispatch('fetchJobList')
 </script>
 
 <style lang="scss" scoped>

@@ -12,22 +12,24 @@
           class="app-bar__link"
           :to="{ name: 'home' }"
         >
-          Home
+          {{ $t("header.home") }}
         </router-link>
         <router-link
           class="app-bar__link"
           :to="{ name: 'jobList' }"
         >
-          Job List
+          {{ $t("header.jobList") }}
         </router-link>
       </v-app-bar-title>
+      <the-language-switcher />
     </v-app-bar>
   </v-layout>
 </template>
 
-<script setup>
-
+<script setup lang="ts">
+import TheLanguageSwitcher from '@/components/TheLanguageSwitcher.vue';
 </script>
+
 <style lang="scss">
 .app-bar {
   display: flex;
@@ -46,19 +48,6 @@
       color: $color-text-secondary;
     }
   }
-
-  @include w-to($screen-tablet) {
-    height: calc(0.15 * 100vh);
-    background-image: url("/images/bg-header-mobile.svg");
-  }
-}
-
-.header {
-  height: calc(0.1 * 100vh);
-  background-color: $color-bg-secondary;
-  background-image: url("/images/bg-header-desktop.svg");
-  background-repeat: no-repeat;
-  background-size:  cover;
 
   @include w-to($screen-tablet) {
     height: calc(0.15 * 100vh);

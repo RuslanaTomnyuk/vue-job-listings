@@ -26,13 +26,13 @@
               v-if="position.new"
               class="container__company container__company--new"
             >
-              NEW!
+              {{ $t("jobCard.new") }}
             </div>
             <div
               v-if="position.featured"
               class="container__company container__company--featured"
             >
-              FEATURED
+              {{ $t("jobCard.featured") }}
             </div>
           </div>
           <div
@@ -57,14 +57,14 @@
         </div>
         <div class="container__right">
           <div
-            v-for="(filter) in jobFilters"
-            :key="filter"
+            v-for="(filter, index) in jobFilters"
+            :key="index"
           >
             <app-button
               v-if="filter"
-              :key="filter"
-              :title="filter"
-              :handle-click="handleAddToFilter"
+              :key="index"
+              :title="filter as string"
+              :handle-click="() => handleAddToFilter(filter as string)"
             />
           </div>
         </div>
@@ -92,13 +92,12 @@ const preparedData = [
   props.position.location,
 ];
 
-const jobFilters = ref<(string | PositionLanguage | PositionTools)[]>([
+const jobFilters = ref([
   props.position.role,
   props.position.level,
   ...(props.position.languages || []),
   ...(props.position.tools || [])
 ]);
-
 </script>
 
 <style lang="scss" scoped>

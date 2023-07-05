@@ -1,17 +1,17 @@
 <template>
   <div class="filters">
     <div
-      v-for="filter in filters"
-      :key="filter"
+      v-for="jobFilter in filters"
+      :key="jobFilter"
     >
       <app-button
-        v-if="filter"
-        :key="filter"
+        v-if="jobFilter"
+        :key="jobFilter"
         with-close
         :with-hover="withHover"
         :with-left-border-radius="withLeftBorderRadius"
-        :title="filter"
-        :handle-click="() => handleRemove(filter)"
+        :title="jobFilter"
+        :handle-click="() => handleRemove(jobFilter)"
       />
     </div>
   </div>
@@ -20,7 +20,7 @@
       v-if="filters.length"
       class="filters__clear-button"
       title="Clear"
-      @click="handleFiltersClear"
+      @click="handleClearFilters"
     >
       Clear
     </button>
@@ -29,19 +29,32 @@
 
 <script setup lang="ts">
 import AppButton from '../AppButton.vue';
+import { useStore } from '@/composables/useStore.ts';
+
+const store = useStore()
 
 interface FiltersProps {
   filters: string[];
-  handleFiltersClear: () => void;
-  handleRemove: (filter: string) => void;
-  withClose: boolean;
-  withHover: boolean;
+  withClose?: boolean;
+  withHover?: boolean;
   withLeftBorderRadius: boolean;
 }
 
-withDefaults(defineProps<FiltersProps>(), {
+const props = withDefaults(defineProps<FiltersProps>(), {
   withLeftBorderRadius: true
 })
+
+const handleRemove = (jobFilter: string) => {
+  if (props.filters.includes(jobFilter)) {
+    store.dispatch('removeFromFilters', jobFilter)
+  }
+}
+
+const handleClearFilters = () => {
+  if (props.filters) {
+    store.dispatch('clearFilters')
+  }
+}
 </script>
 
 <style lang="scss" scoped>

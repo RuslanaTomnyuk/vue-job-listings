@@ -1,29 +1,30 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomePage from '../pages/HomePage.vue';
-import JobDetails from '../components/Jobs/JobDetails.vue';
-import NotFoundPage from '../pages/NotFoundPage.vue';
-import JobListPage from '../pages/JobListPage.vue';
+
+import Home from '@/pages/HomePage.vue';
+import JobList from '@/pages/JobListPage.vue';
+import JobListCardDetails from '@/components/Jobs/JobListCardDetails.vue';
+import NotFound from '../pages/NotFoundPage.vue';
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomePage
+    component: Home,
   },
   {
     path: '/job-list',
     name: 'jobList',
-    component: JobListPage
+    component: JobList,
   },
   {
-    path: '/job-list/position/:id',
+    path: '/job-list/:id',
     name: 'jobDetails',
-    component: JobDetails,
+    component: JobListCardDetails,
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'not found',
-    component: NotFoundPage
+    component: NotFound
   },
 ]
 

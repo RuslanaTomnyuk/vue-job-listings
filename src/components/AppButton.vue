@@ -24,7 +24,7 @@ interface AppButtonProps {
   withClose?: boolean;
   withHover?: boolean;
   withLeftBorderRadius: boolean;
-  handleClick: (filter: string) => void;
+  handleClick: (jobFilter: MouseEvent | string) => void;
 }
 
 withDefaults(defineProps<AppButtonProps>(), {
