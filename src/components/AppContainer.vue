@@ -36,14 +36,14 @@ withDefaults(defineProps<AppContainerProps>(), {
 .container {
   display: flex;
   gap: px-to-rem(20);
-  background-color: $color-bg-page;
+  background-color: $color-bg-block;
 
-    &--bigPaddings {
+  &--bigPaddings {
     padding:  px-to-rem(20);
 
-     @include w-to($screen-tablet) {
-       padding: px-to-rem(10);
-     }
+    @include w-to($screen-tablet) {
+      padding: px-to-rem(10);
+    }
   }
 
   &--normalPaddings {
@@ -55,8 +55,7 @@ withDefaults(defineProps<AppContainerProps>(), {
   }
 
   &--shadowed {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-    transition: all 0.15s;
+    box-shadow: 0 5px 15px rgba(0 0 0 / 35%);
   }
 }
 </style>

@@ -3,7 +3,7 @@
     <button
       :class="{'button__title': true, 'button__title--with-hover': withHover, 'button__title--with-left-border-radius': withLeftBorderRadius}"
       type="button"
-      @click="() => handleClick(title)"
+      @click.stop="() => handleClick(title)"
     >
       {{ title }}
     </button>
@@ -24,7 +24,7 @@ interface AppButtonProps {
   withClose?: boolean;
   withHover?: boolean;
   withLeftBorderRadius: boolean;
-  handleClick: (title: string) => void;
+  handleClick: (jobFilter: MouseEvent | string) => void;
 }
 
 withDefaults(defineProps<AppButtonProps>(), {
@@ -39,49 +39,54 @@ withDefaults(defineProps<AppButtonProps>(), {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin: px-to-rem(5);
+    padding: px-to-rem(3) px-to-rem(5);
 
     &__title {
       display: flex;
-      padding: px-to-rem(5);
-      font-size: $font-size;
-      font-weight: 700;
-      color: $greenish;
+      align-items: center;
+      justify-content: center;
+      padding:  px-to-rem(5);
+      font: $font-default-bold;
+      color: $color-text-primary;
       cursor: pointer;
       background-color: $color-bg-btn;
       border: none;
       border-radius: 5px;
-      transition: background-color 0.2s;
+      transition: background-color 0.5s;
 
       &--with-left-border-radius {
+        display: flex;
+        align-items: center;
         border-radius: 5px 0 0 5px;
       }
 
       &--with-hover {
         &:hover {
-          color: $white;
-          background-color: $greenish;
+          color: $color-text-secondary;
+          background-color: $color-bg-secondary;
+          transition: background-color 0.7s;
         }
       }
     }
 
-      &__close {
-        display: flex;
-        padding: px-to-rem(5);
-        font-size: $font-size;
-        font-weight: 700;
-        color: $white;
-        cursor: pointer;
-        background-color: $greenish;
-        border: none;
-        border-radius: 0 5px 5px 0;
-        transition: background-color 0.2s;
+    &__close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: px-to-rem(5);
+      font: $font-default-bold;
+      color: $color-text-secondary;
+      cursor: pointer;
+      background-color: $color-bg-secondary;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      transition: background-color 0.2s;
 
-        &:hover {
-          color: $white;
-          background-color: $black;
-
-        }
+      &:hover {
+        color: $color-text-secondary;
+        background-color: $color-bg-accent;
+        transition: background-color 0.5s;
       }
+    }
   }
 </style>

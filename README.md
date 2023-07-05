@@ -1,52 +1,25 @@
-# Vue 3 + TypeScript + Vite
+# Vue Job Listings
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Gitlab repository - [vue-job-listings](https://github.com/RuslanaTomnyuk/vue-job-listings.git)
 
-## Recommended IDE Setup
+## Built with
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support For `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-
- Frontend Mentor - Job listings with a filtering solution
-
-This is a solution to the [Job listings with filtering challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/job-listings-with-filtering-ivstIPCt). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
+- Semantic HTML5 markup
+- SCSS(mixins, variables)
+- Flexbox
+- [Vue](https://vuejs.org/) - The Progressive JavaScript Framework
+- [Vite](https://vitejs.dev/) - Vite Next Generation Frontend Tooling
+- TypeScript
 
    # Table of contents
 
-- [Overview](#overview)
-  - [The challenge](#the-challenge)
-  - [Screenshot](#screenshot)
-  - [Links](#links)
-  - [Built with](#built-with)
-  - [Useful resources](#useful-resources)
+- [Screenshot](#screenshot)
+- [Getting Started](#getting-started)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Development](#development)
 
-# Overview
-
-## The challenge
-
-Your challenge is to build out a job listing page and get it looking as close to the design as possible.
-
-You can use any tools you like to help you complete the challenge. So if you've got something you'd like to practice, feel free to give it a go.
-
-Users should be able to:
-
-- View the optimal layout for the site depending on their device's screen size
-- See hover states for all interactive elements on the page
-- Filter job listings based on the categories
-  Filter job listings. In this option, you'd use the hardcoded content that already exists in the file.
-
-The categories are:
-
-- Role: Frontend, Backend, Fullstack
-- Level: Junior, Midweight, Senior
-- Languages: Python, Ruby, JavaScript, HTML, CSS
-- Tools: React, Sass, Vue, Django, RoR (Ruby on Rails)
-
-### Screenshot
+# Screenshot
 
 ![](./design/desktop.png)
 ![desktop-filter.png](./design/desktop-filter.png)
@@ -54,16 +27,32 @@ The categories are:
 ![mobile.png](./design/mobile.png)
 ![mobile-filters.png](./design/mobile-filters.png)
 
-#### Links
+## Getting Started
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+To get started with the project, follow these steps:
 
-##### Built with
+### Installation
 
-- Semantic HTML5 markup
-- SCSS(mixins, variables)
-- Flexbox
-- Mobile-first workflow
-- [Vue](https://vuejs.org/) - The Progressive JavaScript Framework
-- [Vite](https://vitejs.dev/) - Vite Next Generation Frontend Tooling
+Environment and tools:
+- Node.js (version 16 or higher)
+- npm (version 6 or higher)
+
+Project set up:
+1. Clone the repository: `git clone` [vue-job-listings](https://github.com/RuslanaTomnyuk/vue-job-listings.git)
+2. Navigate to the project directory: `cd vue-job-listings`.
+3. Install the dependencies: `npm install`.
+
+To start the app run `npm run dev`.
+
+#### Usage
+
+- to start the app use `npm run dev`
+- to run eslint use `npm run eslint`, stylelint - `npm run stylelint`
+- to fix eslint problems automatically use `npm run fix:lint`, stylelint - `npm run fix:stylelint`
+
+##### Development
+
+To run the project in development mode, use the following command:
+`npm run dev`.
+
+This will start the development server, and you can access the application at `http://localhost:5173`.

@@ -6,18 +6,30 @@ $screen-desktop: 1440px;
 $px-rem-ratio: 14;
 
 // colors
-$light-green: #effafa;
-$greenish: #5ba4a4;
-$black: #000;
-$white: #fff;
+$color-text-primary: #5ba4a4;
+$color-text-secondary: #fff;
 $dark-grayish-cyan: #7b8e8e;
+$color-accent: #293b49;
 
 // background colors
 $color-bg: #effafa;
 $color-bg-btn: #e6ebeb;
-$color-bg-page: #f3f6f9;
+$color-bg-highlighted: #fdabaf;
+$color-bg-secondary: #5ba4a4;
+$color-bg-additional: #293b49;
+$color-bg-accent: #000;
+$color-bg-block: #f3f6f9;
 
 // fonts
 $font-family: "League Spartan", sans-serif;
 
-$font-size: 15px;
+$font-size: 14px;
+$font-size-extra-small: 10px;
+
+$font-extra-small: 500 #{px-to-rem(10)}/#{px-to-rem(10)} #{var(--font-family)};
+$font-default: 500 #{px-to-rem(14)}/#{px-to-rem(20)} #{var(--font-family)};
+$font-default-bold: 700 #{px-to-rem(15)}/#{px-to-rem(15)} #{var(--font-family)};
+
+// sizes
+$main-page-padding: px-to-rem(30) px-to-rem(50);
+$main-page-padding-mobile: px-to-rem(20) px-to-rem(30)

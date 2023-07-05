@@ -1,0 +1,19 @@
+{
+  "locale": {
+    "en": "en-US",
+    "ukr": "ukr-UKR"
+  },
+  "header": {
+    "home": "Home",
+    "jobList": "Job List"
+  },
+  "pages": {
+    "mainPage": "Main Page",
+    "welcome": "Welcome to the main page!"
+
+  },
+  "jobCard": {
+    "new": "NEW!",
+    "featured": "FEATURED"
+  }
+}

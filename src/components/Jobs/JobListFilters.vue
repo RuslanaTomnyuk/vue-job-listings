@@ -1,27 +1,26 @@
 <template>
   <div class="filters">
     <div
-      v-for="(clickedButton, index) in clickedButtons"
-      :key="index"
+      v-for="jobFilter in filters"
+      :key="jobFilter"
     >
       <app-button
-        v-if="clickedButton"
-        :key="index"
+        v-if="jobFilter"
+        :key="jobFilter"
         with-close
         :with-hover="withHover"
         :with-left-border-radius="withLeftBorderRadius"
-        class="filters__buttons"
-        :title="clickedButton"
-        @click="handleRemove(clickedButton)"
+        :title="jobFilter"
+        :handle-click="() => handleRemove(jobFilter)"
       />
     </div>
   </div>
   <div class="filters__clear">
     <button
-      v-if="clickedButtons.length"
+      v-if="filters.length"
       class="filters__clear-button"
       title="Clear"
-      @click="handleButtonClear"
+      @click="handleClearFilters"
     >
       Clear
     </button>
@@ -29,21 +28,33 @@
 </template>
 
 <script setup lang="ts">
-import AppButton from './AppButton.vue';
+import AppButton from '../AppButton.vue';
+import { useStore } from '@/composables/useStore.ts';
+
+const store = useStore()
 
 interface FiltersProps {
-  clickedButtons: string[];
-  handleButtonClear: () => void;
-  handleRemove: (clickedButton: string) => void;
-  withClose: boolean;
-  withHover: boolean;
+  filters: string[];
+  withClose?: boolean;
+  withHover?: boolean;
   withLeftBorderRadius: boolean;
 }
 
-withDefaults(defineProps<FiltersProps>(), {
+const props = withDefaults(defineProps<FiltersProps>(), {
   withLeftBorderRadius: true
 })
 
+const handleRemove = (jobFilter: string) => {
+  if (props.filters.includes(jobFilter)) {
+    store.dispatch('removeFromFilters', jobFilter)
+  }
+}
+
+const handleClearFilters = () => {
+  if (props.filters) {
+    store.dispatch('clearFilters')
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -58,13 +69,11 @@ withDefaults(defineProps<FiltersProps>(), {
       justify-content: center;
 
       &-button {
-        font-family: $font-family;
-        font-size: $font-size;
-        font-weight: 700;
+        font: $font-default-bold;
         color: $dark-grayish-cyan;
         text-decoration: underline;
         cursor: pointer;
-        background-color: $color-bg-page;
+        background-color: $color-bg-block;
         border: none;
       }
     }
