@@ -22,7 +22,7 @@ const jobs: Module<JobsStoreState, RootStoreState> = {
   }),
   getters: {
     getJobPositionById: (state) => (id: number): JobPosition | undefined => {
-      return state.jobs.find(job => job.id === id)
+      return state.jobs.find((job: JobPosition) => job.id === id)
     },
     filteredJobList: (state) => {
       return state.jobs.filter((position: JobPosition) => {
