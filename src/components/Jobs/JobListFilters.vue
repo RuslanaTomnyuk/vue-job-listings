@@ -67,15 +67,15 @@ const handleClearFilters = () => {
       display: flex;
       align-items: center;
       justify-content: center;
+    }
 
-      &-button {
-        font: $font-default-bold;
-        color: $dark-grayish-cyan;
-        text-decoration: underline;
-        cursor: pointer;
-        background-color: $color-bg-block;
-        border: none;
-      }
+    &__clear-button {
+      font: $font-default-bold;
+      color: $dark-grayish-cyan;
+      text-decoration: underline;
+      cursor: pointer;
+      background-color: $color-bg-block;
+      border: none;
     }
   }
 </style>

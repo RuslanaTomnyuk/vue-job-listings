@@ -32,4 +32,9 @@ $font-default-bold: 700 #{px-to-rem(15)}/#{px-to-rem(15)} #{var(--font-family)};
 
 // sizes
 $main-page-padding: px-to-rem(30) px-to-rem(50);
-$main-page-padding-mobile: px-to-rem(20) px-to-rem(30)
+$main-page-padding-mobile: px-to-rem(20) px-to-rem(30);
+
+// transitions
+$transition-slow: 0.7s;
+$transition-medium: 0.5s;
+$transition-fast: 0.2s;

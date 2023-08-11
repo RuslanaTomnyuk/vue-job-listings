@@ -1,76 +1,74 @@
 <template>
-  <div>
-    <app-container
-      paddings-size="normal"
-      with-border
-      with-shadow
+  <app-container
+    paddings-size="normal"
+    with-border
+    with-shadow
+  >
+    <div
+      class="container"
     >
+      <div class="container__logo">
+        <app-logo
+          :logo="position.logo"
+          placeholder="logo"
+        />
+      </div>
       <div
-        class="container"
+        class="container__left"
       >
-        <div class="container__logo">
-          <app-logo
-            :logo="position.logo"
-            placeholder="logo"
-          />
+        <hr class="container__line">
+        <div
+          class="container__company"
+        >
+          {{ position.company }}
+          <div
+            v-if="position.new"
+            class="container__company container__company--new"
+          >
+            {{ $t("jobCard.new") }}
+          </div>
+          <div
+            v-if="position.featured"
+            class="container__company container__company--featured"
+          >
+            {{ $t("jobCard.featured") }}
+          </div>
         </div>
         <div
-          class="container__left"
+          class="container__position"
         >
-          <hr class="container__line">
-          <div
-            class="container__company"
-          >
-            {{ position.company }}
-            <div
-              v-if="position.new"
-              class="container__company container__company--new"
-            >
-              {{ $t("jobCard.new") }}
-            </div>
-            <div
-              v-if="position.featured"
-              class="container__company container__company--featured"
-            >
-              {{ $t("jobCard.featured") }}
-            </div>
-          </div>
-          <div
-            class="container__position"
-          >
-            {{ position.position }}
-          </div>
-          <div
-            class="container__information"
-          >
-            <div class="container__dot" />
-            <div
-              v-for="(property, index) in preparedData"
-              :key="index"
-              :title="property"
-              class="container__information container__information--dot"
-            >
-              {{ property }}
-              <div class="container__dot" />
-            </div>
-          </div>
+          {{ position.position }}
         </div>
-        <div class="container__right">
+        <div
+          class="container__information"
+        >
+          <div class="container__dot" />
           <div
-            v-for="(filter, index) in jobFilters"
+            v-for="(property, index) in preparedData"
             :key="index"
+            :title="property"
+            class="container__information container__information--dot"
           >
-            <app-button
-              v-if="filter"
-              :key="index"
-              :title="filter as string"
-              :handle-click="() => handleAddToFilter(filter as string)"
-            />
+            {{ property }}
+            <div class="container__dot" />
           </div>
         </div>
       </div>
-    </app-container>
-  </div>
+      <div class="container__right">
+        <div
+          v-for="(filter, index) in jobFilters"
+          :key="index"
+        >
+          <app-button
+            v-if="filter"
+            :key="index"
+            :title="filter as string"
+            :handle-click="() => handleAddToFilter ? handleAddToFilter(filter as string) : null"
+          />
+        </div>
+      </div>
+    </div>
+  </app-container>
 </template>
 
 <script setup lang="ts">
@@ -81,7 +79,7 @@ import AppButton from '../AppButton.vue';
 
 interface JobCardProps {
   position: JobPosition;
-  handleAddToFilter: (filter: string) => void;
+  handleAddToFilter?: (filter: string) => void;
 }
 
 const props = defineProps<JobCardProps>()

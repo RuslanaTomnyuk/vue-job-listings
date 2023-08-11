@@ -1,4 +1,4 @@
-import axiosClient from '@/axios/axiosClient.ts';
+import axiosClient from '@/configs/axios/axiosClient.ts';
 
 const fetchJobs = async () => {
   try {

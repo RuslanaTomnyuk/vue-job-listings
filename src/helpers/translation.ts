@@ -16,10 +16,7 @@ const translation = {
 
   async switchLanguage(newLocale: NewLocale) {
     translation.currentLocale = newLocale;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    document.querySelector('html').setAttribute('lang', newLocale)
-    localStorage.setItem('user-locale', newLocale)
+    localStorage.setItem('lang', newLocale)
   }
 }
 

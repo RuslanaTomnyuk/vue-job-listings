@@ -1,7 +1,7 @@
 <template>
-  <the-home />
+  <home />
 </template>
 
 <script setup>
-import TheHome from '@/components/TheHome.vue';
+import Home from '@/components/Home.vue';
 </script>

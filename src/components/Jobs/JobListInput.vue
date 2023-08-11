@@ -3,7 +3,7 @@
     <input
       :value="modelValue"
       placeholder="Search..."
-      type="text"
+      type="search"
       class="container__input"
       @input="$emit('update:modelValue', $event.target.value)"
     >
@@ -26,12 +26,13 @@ defineEmits([ 'update:modelValue' ])
   flex-direction: column;
   gap: px-to-rem(10);
   max-width: 100%;
+  padding: 0 10px;
 
   &__input {
     padding: 4px 10px;
     border: 2px solid rgba(0 0 0 / 12%);
     border-radius: 5px;
-    transition: .15s all ease-in-out;
+    transition: $transition-fast all ease-in-out;
 
     &:focus {
       outline: none;

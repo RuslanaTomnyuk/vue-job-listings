@@ -9,16 +9,12 @@
     >
       <v-app-bar-title>
         <router-link
+          v-for="route in routes"
+          :key="route.name"
           class="app-bar__link"
-          :to="{ name: 'home' }"
+          :to="{ name: route.name }"
         >
-          {{ $t("header.home") }}
-        </router-link>
-        <router-link
-          class="app-bar__link"
-          :to="{ name: 'jobList' }"
-        >
-          {{ $t("header.jobList") }}
+          {{ $t(route.translationKey) }}
         </router-link>
       </v-app-bar-title>
       <the-language-switcher />
@@ -27,7 +23,13 @@
 </template>
 
 <script setup lang="ts">
-import TheLanguageSwitcher from '@/components/TheLanguageSwitcher.vue';
+import TheLanguageSwitcher from '@/components/LanguageSwitcher.vue'
+import { computed } from 'vue';
+
+const routes = computed(() => [
+  { name: 'home', translationKey: 'header.home' },
+  { name: 'jobList', translationKey: 'header.jobList' },
+])
 </script>
 
 <style lang="scss">

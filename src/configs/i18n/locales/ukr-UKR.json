@@ -15,5 +15,12 @@
   "jobCard": {
     "new": "Нова!",
     "featured": "Популярна"
+  },
+  "jobListCardDetails": {
+    "back": "< Назад",
+     "home": "Додому"
+  },
+  "notFound": {
+    "goHome": "Назад додому"
   }
 }

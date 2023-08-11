@@ -10,10 +10,16 @@
   "pages": {
     "mainPage": "Main Page",
     "welcome": "Welcome to the main page!"
-
   },
   "jobCard": {
     "new": "NEW!",
     "featured": "FEATURED"
+  },
+  "jobListCardDetails": {
+    "back": "< Back",
+    "home": "Home"
+  },
+  "notFound": {
+    "goHome": "Go back home"
   }
 }

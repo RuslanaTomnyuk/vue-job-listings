@@ -51,6 +51,7 @@ import JobListCard from '@/components/Jobs/JobListCard.vue';
 import AppContainer from '../AppContainer.vue';
 import AppLoader from '../AppLoader.vue';
 import { useStore } from '@/composables/useStore.ts';
+import { useDebounce } from '@/composables/useDebounce';
 import JobListInput from '@/components/Jobs/JobListInput.vue';
 
 const store = useStore()
@@ -59,11 +60,20 @@ const filters = computed<string[]>(() => jobs.value.filters)
 const error = computed(() => jobs.value.error)
 const isLoading = computed(() => jobs.value.isLoading)
 
-const searchText = ref('')
+const searchInput = ref('')
+const searchText = useDebounce(searchInput)
 
 const filteredByInputSearch = computed(() => {
-  return jobs.value.jobs.filter(job =>
-    job.position.toLowerCase().includes(searchText.value.toLowerCase()))
+  return searchText.value.length > 1
+    ? jobs.value.jobs.filter(job =>
+      job.position.concat(
+        job.role,
+        job.level,
+        ...job.languages,
+        ...job.tools
+      ).toLowerCase().includes(searchText.value.trim().toLowerCase())
+    )
+    : jobs.value.jobs
 })
 
 const handleAddToFilter = (jobFilter: string) => {
@@ -75,7 +85,7 @@ const handleAddToFilter = (jobFilter: string) => {
 const filteredJobList = computed(() => store.getters.filteredJobList)
 store.dispatch('fetchJobList')
 
-const filteredCards = computed(() => searchText.value.length > 0 ? filteredByInputSearch.value : filteredJobList.value)
+const filteredCards = computed(() => searchText.value.length ? filteredByInputSearch.value : filteredJobList.value)
 </script>
 
 <style lang="scss" scoped>

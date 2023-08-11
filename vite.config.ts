@@ -9,7 +9,7 @@ export default defineConfig(() => {
   return {
     plugins: [ vue(),
       VueI18nPlugin({
-        include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**'),
+        include: resolve(dirname(fileURLToPath(import.meta.url)), './src/configs/locales/**'),
       })
     ],
     resolve: {

@@ -52,7 +52,7 @@ withDefaults(defineProps<AppButtonProps>(), {
       background-color: $color-bg-btn;
       border: none;
       border-radius: 5px;
-      transition: background-color 0.5s;
+      transition: background-color $transition-medium;
 
       &--with-left-border-radius {
         display: flex;
@@ -64,7 +64,7 @@ withDefaults(defineProps<AppButtonProps>(), {
         &:hover {
           color: $color-text-secondary;
           background-color: $color-bg-secondary;
-          transition: background-color 0.7s;
+          transition: background-color $transition-slow;
         }
       }
     }
@@ -80,12 +80,12 @@ withDefaults(defineProps<AppButtonProps>(), {
       background-color: $color-bg-secondary;
       border: none;
       border-radius: 0 5px 5px 0;
-      transition: background-color 0.2s;
+      transition: background-color $transition-fast;
 
       &:hover {
         color: $color-text-secondary;
         background-color: $color-bg-accent;
-        transition: background-color 0.5s;
+        transition: background-color $transition-medium;
       }
     }
   }
