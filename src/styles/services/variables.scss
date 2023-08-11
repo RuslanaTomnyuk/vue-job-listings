@@ -29,6 +29,8 @@ $font-size-extra-small: 10px;
 $font-extra-small: 500 #{px-to-rem(10)}/#{px-to-rem(10)} #{var(--font-family)};
 $font-default: 500 #{px-to-rem(14)}/#{px-to-rem(20)} #{var(--font-family)};
 $font-default-bold: 700 #{px-to-rem(15)}/#{px-to-rem(15)} #{var(--font-family)};
+$font-title: 700 #{px-to-rem(32)}/#{px-to-rem(32)} #{var(--font-family)};
+$font-content: 500 #{px-to-rem(20)}/#{px-to-rem(20)} #{var(--font-family)};
 
 // sizes
 $main-page-padding: px-to-rem(30) px-to-rem(50);

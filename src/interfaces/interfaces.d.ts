@@ -10,14 +10,6 @@ interface JobPosition {
   postedAt: string;
   contract: string;
   location: string;
-  languages: PositionLanguage[];
-  tools: PositionTools[];
-}
-
-interface PositionLanguage {
-language: string;
-}
-
-interface PositionTools {
-  tool: string;
+  languages: string[];
+  tools: string[];
 }

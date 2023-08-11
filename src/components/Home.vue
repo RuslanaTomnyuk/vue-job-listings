@@ -1,8 +1,12 @@
 <template>
   <app-main-layout>
     <div class="home">
-      <h1>{{ $t("pages.mainPage") }}</h1>
-      <p>{{ $t("pages.welcome") }}</p>
+      <h1 class="home__title">
+        {{ $t("pages.mainPage") }}
+      </h1>
+      <p class="home__content">
+        {{ $t("pages.welcome") }}
+      </p>
     </div>
     <div class="home__image">
       <img
@@ -23,8 +27,18 @@ const homeImage = './public/images/find-job.jpg';
 .home {
   display: flex;
   flex-direction: column;
+  gap: px-to-rem(10);
   align-items: center;
   justify-content: center;
+  margin-bottom: px-to-rem(10);
+
+  &__title {
+    font: $font-title;
+  }
+
+  &__content {
+    font: $font-content;
+  }
 
   &__image {
     display: flex;
