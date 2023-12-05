@@ -42,7 +42,7 @@ const routes = computed(() => [
   background-size:  cover;
 
   &__link {
-    margin-right: 20px;
+    margin-right: px-to-rem(15);
     color: $color-bg-accent;
     text-decoration: none;
 

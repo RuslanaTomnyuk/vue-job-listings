@@ -130,7 +130,7 @@ const jobFilters = ref([
       width: 100%;
       margin-top: px-to-rem(10);
       content: '';
-      border-top: 1.5px solid $dark-grayish-cyan;
+      border-top: px-to-rem(1) solid $dark-grayish-cyan;
 
       @include w-from($screen-tablet) {
         display: none;
@@ -141,22 +141,22 @@ const jobFilters = ref([
       display: flex;
       flex: 50%;
       flex-direction: column;
-      gap: px-to-rem(9);
+      gap: px-to-rem(10);
       justify-content: flex-start;
     }
 
     &__information {
       display: flex;
       flex-direction: row;
-      gap: px-to-rem(7);
+      gap: px-to-rem(5);
       align-items: center;
       color: $dark-grayish-cyan;
     }
 
     &__dot {
       position: relative;
-      width: 4px;
-      height: 4px;
+      width: px-to-rem(3);
+      height: px-to-rem(3);
       background-color: $dark-grayish-cyan;
       border-radius: 50%;
     }
@@ -168,7 +168,7 @@ const jobFilters = ref([
     &__company {
       display: flex;
       flex-direction: row;
-      gap: px-to-rem(6);
+      gap: px-to-rem(5);
       align-items: center;
       justify-content: flex-start;
       font-weight: 700;
@@ -176,21 +176,21 @@ const jobFilters = ref([
 
       &--new {
         display: flex;
-        padding: px-to-rem(3) px-to-rem(5);
+        padding: px-to-rem(5);
         font: $font-extra-small;
         color: $color-text-secondary;
         background-color: $color-bg-secondary;
         border: none;
-        border-radius: px-to-rem(20);
+        border-radius: px-to-rem(25);
       }
 
       &--featured {
         display: flex;
-        padding: px-to-rem(3) px-to-rem(5);
+        padding: px-to-rem(5);
         font: $font-extra-small;
         color: $color-text-secondary !important;
         background-color: $color-bg-accent;
-        border-radius: px-to-rem(20);
+        border-radius: px-to-rem(25);
       }
     }
 

@@ -29,6 +29,11 @@ import AppHeader from '../components/AppHeader.vue';
   &__content {
     display: flex;
     flex-direction: column;
+    gap: px-to-rem(10);
+
+    @include w-to($screen-tablet) {
+      gap: px-to-rem(20);
+    }
   }
 }
 </style>

@@ -39,7 +39,7 @@ withDefaults(defineProps<AppContainerProps>(), {
   background-color: $color-bg-block;
 
   &--bigPaddings {
-    padding:  px-to-rem(20);
+    padding: px-to-rem(20);
 
     @include w-to($screen-tablet) {
       padding: px-to-rem(10);
@@ -55,7 +55,7 @@ withDefaults(defineProps<AppContainerProps>(), {
   }
 
   &--shadowed {
-    box-shadow: 0 5px 15px rgba(0 0 0 / 35%);
+    box-shadow: 0 px-to-rem(5) px-to-rem(15) rgba(0 0 0 / 35%);
   }
 }
 </style>

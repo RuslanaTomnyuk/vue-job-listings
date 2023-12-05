@@ -42,7 +42,7 @@ store.dispatch('fetchJobList')
 .buttons {
   display: flex;
   flex-direction: row;
-  gap: px-to-rem(7);
+  gap: px-to-rem(10);
   align-items: center;
   justify-content: center;
   padding: px-to-rem(20);

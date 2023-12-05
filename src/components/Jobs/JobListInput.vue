@@ -26,12 +26,12 @@ defineEmits([ 'update:modelValue' ])
   flex-direction: column;
   gap: px-to-rem(10);
   max-width: 100%;
-  padding: 0 10px;
+  padding: 0 px-to-rem(10);
 
   &__input {
-    padding: 4px 10px;
-    border: 2px solid rgba(0 0 0 / 12%);
-    border-radius: 5px;
+    padding: px-to-rem(5) px-to-rem(10);
+    border: px-to-rem(1) solid rgba(0 0 0 / 12%);
+    border-radius: px-to-rem(5);
     transition: $transition-fast all ease-in-out;
 
     &:focus {

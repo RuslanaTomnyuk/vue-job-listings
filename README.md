@@ -21,12 +21,12 @@ Gitlab repository - [vue-job-listings](https://github.com/RuslanaTomnyuk/vue-job
 
 # Screenshot
 
-![](./screenshot.jpg)
-![img.png](img.png)
-![img_1.png](img_1.png)
-![img_2.png](img_2.png)
-![img_3.png](img_3.png)
-![img_4.png](img_4.png)
+![](./design/desktop.png)
+![desktop-filter.png](./design/desktop-filter.png)
+![tablet-filters.png](./design/tablet-filters.png)
+![mobile.png](./design/mobile.png)
+![mobile-filters.png](./design/mobile-filters.png)
+![input-search.png](./design/input-search.png)
 
 ## Getting Started
 

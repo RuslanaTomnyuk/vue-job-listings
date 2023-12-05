@@ -39,7 +39,7 @@ withDefaults(defineProps<AppButtonProps>(), {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: px-to-rem(3) px-to-rem(5);
+    padding: px-to-rem(5) px-to-rem(5);
 
     &__title {
       display: flex;
@@ -51,13 +51,13 @@ withDefaults(defineProps<AppButtonProps>(), {
       cursor: pointer;
       background-color: $color-bg-btn;
       border: none;
-      border-radius: 5px;
+      border-radius: px-to-rem(5);
       transition: background-color $transition-medium;
 
       &--with-left-border-radius {
         display: flex;
         align-items: center;
-        border-radius: 5px 0 0 5px;
+        border-radius: px-to-rem(5) 0 0 px-to-rem(5);
       }
 
       &--with-hover {
@@ -79,7 +79,7 @@ withDefaults(defineProps<AppButtonProps>(), {
       cursor: pointer;
       background-color: $color-bg-secondary;
       border: none;
-      border-radius: 0 5px 5px 0;
+      border-radius: 0 px-to-rem(5) px-to-rem(5) 0;
       transition: background-color $transition-fast;
 
       &:hover {

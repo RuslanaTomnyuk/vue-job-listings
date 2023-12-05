@@ -42,7 +42,7 @@ onMounted(async () => {
 
 <style lang="scss">
 .language-switcher {
-  margin-right: 10px;
+  margin-right: px-to-rem(10);
   font: $font-default;
   cursor: pointer;
   background-color: transparent;
