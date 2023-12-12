@@ -22,10 +22,10 @@
         >
           {{ position.company }}
           <div
-            v-if="position.new"
+            v-if="position.newPosition"
             class="container__company container__company--new"
           >
-            {{ $t("jobCard.new") }}
+            {{ $t("jobCard.newPosition") }}
           </div>
           <div
             v-if="position.featured"

@@ -12,7 +12,7 @@
     "welcome": "Welcome to the main page!"
   },
   "jobCard": {
-    "new": "NEW!",
+    "newPosition": "NEW!",
     "featured": "FEATURED"
   },
   "jobListCardDetails": {

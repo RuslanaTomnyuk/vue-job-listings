@@ -2,7 +2,7 @@ interface JobPosition {
   id: number;
   company: string;
   logo: string;
-  new: boolean;
+  newPosition: boolean;
   featured: false,
   position: string;
   role: string;

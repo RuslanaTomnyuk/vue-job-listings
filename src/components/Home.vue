@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import AppMainLayout from '../layouts/AppMainLayout.vue';
-const homeImage = './public/images/find-job.jpg';
+const homeImage = '/images/find-job.jpg';
 </script>
 
 <style lang="scss" scoped>

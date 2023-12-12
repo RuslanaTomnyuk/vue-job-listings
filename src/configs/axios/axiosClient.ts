@@ -2,7 +2,7 @@ import axios from 'axios';
 import errorHandler from '@/services/handlerError.ts';
 
 const axiosClient = axios.create({
-  baseURL: 'https://gist.githubusercontent.com/TetianaKor/d804200ae8e6af917d3a90cf32753fed/raw/179ac94c9aba684555330c65f9929dd906de5665'
+  baseURL: 'http://localhost:3000'
 });
 
 axiosClient.interceptors.response.use(
