@@ -1,7 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import 'reflect-metadata';
-import jobListRouter from './routes/jobList';
+import jobsRouter from './routes/jobsRouter';
+import authRouter from './routes/auth';
+import bodyParser from 'body-parser';
+import userRouter from './routes/user';
 
 const app = express();
 const apiRouter = express.Router();
@@ -13,7 +16,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use('/', apiRouter);
-apiRouter.use('/job-list', jobListRouter);
+apiRouter.use('/job-list', jobsRouter);
+apiRouter.use('/auth', authRouter);
+apiRouter.use('/user', userRouter);
 
-export default app
+export default app;

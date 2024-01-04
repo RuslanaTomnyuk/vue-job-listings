@@ -34,7 +34,7 @@ const route = useRoute();
 const jobId = +route.params.id;
 
 const jobPositionById = computed<JobPosition>(() => store.getters.getJobPositionById(jobId))
-
+console.log(jobPositionById)
 store.dispatch('fetchJobList')
 </script>
 
