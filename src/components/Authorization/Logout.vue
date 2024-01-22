@@ -40,8 +40,7 @@ const logout = async() => {
 
     localStorage.removeItem('user-data');
     axiosClient.defaults.headers.common['Authorization'] = '';
-    document.cookie = 'auth' +'=; Expires=Thu, 18 Jan 2024 00:00:01 GMT;'
-
+    
     await router.push('/auth/login')
   } catch (error) {
     console.log('Error while logging out', error);

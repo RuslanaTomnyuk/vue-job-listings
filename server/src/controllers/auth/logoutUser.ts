@@ -5,7 +5,9 @@ export const logoutUser = async (req, res) => {
   try {
     const authHeader = req.headers['cookie'];
     if (!authHeader) return res.sendStatus(204);
-    const refreshToken = authHeader.split('=')[1];
+
+    const splittedToken = authHeader.split(';')[0];
+    const refreshToken = splittedToken.split('auth=')[1];
 
     const userToken = await AppDataSource.getRepository(UserToken).findOneBy({
       token: refreshToken,

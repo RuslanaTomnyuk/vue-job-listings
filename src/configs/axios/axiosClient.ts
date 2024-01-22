@@ -15,7 +15,6 @@ export const storeAccessToken = (token: string) => {
   }
 };
 
-
 let refresh = false;
 axiosClient.interceptors.response.use(
   (response) => response,

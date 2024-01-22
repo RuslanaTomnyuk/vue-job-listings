@@ -103,7 +103,6 @@ const loginTo = async () => {
 //   { key: 'confirmPassword', validationType: AppValidationTypes.confirmPassword, isRequired: true },
 // ]);
 
-
 </script>
 
 <style lang="scss">

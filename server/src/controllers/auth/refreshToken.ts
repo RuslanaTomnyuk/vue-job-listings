@@ -12,7 +12,8 @@ export const refreshToken = async (req, res) => {
     });
   }
 
-  const token = authHeader.split('=')[1];
+  const splittedToken = authHeader.split(';')[0];
+  const token = splittedToken.split('auth=')[1];
 
   const refreshTokenFromDB = await AppDataSource.getRepository(
     UserToken
