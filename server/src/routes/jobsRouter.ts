@@ -6,8 +6,12 @@ import * as createJobPositionController from '../controllers/jobPosition/createJ
 
 export const jobsRouter = Router({ mergeParams: true });
 
-jobsRouter.post('', createJobPositionController.createJobPosition);
 jobsRouter.get('', jobListController.getJobList);
+jobsRouter.post(
+  '',
+  createJobPositionController.createJobPosition
+);
+
 jobsRouter.get('/:id', jobPositionController.getJobPosition);
 jobsRouter.delete('/:id', deleteJobPositionController.deleteJobPosition);
 

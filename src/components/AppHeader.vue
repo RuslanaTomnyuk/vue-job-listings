@@ -17,19 +17,52 @@
           {{ $t(route.translationKey) }}
         </router-link>
       </v-app-bar-title>
-      <the-language-switcher />
+      <!-- <v-spacer /> -->
+      <v-app-bar-title>
+        <router-link
+          v-for="route in authRoutes"
+          :key="route.name"
+          class="app-bar__link"
+          :to="{ name: route.name }"
+        >
+          {{ $t(route.translationKey) }}
+        </router-link>
+      </v-app-bar-title>
+
+      <v-app-bar-title>
+        <router-link
+          v-for="route in logoutRoute"
+          :key="route.name"
+          class="app-bar__link"
+          :to="{ name: route.name }"
+        >
+          {{ $t(route.translationKey) }}
+        </router-link>
+      </v-app-bar-title>
+      <v-spacer />
+      <language-switcher />
     </v-app-bar>
   </v-layout>
 </template>
 
 <script setup lang="ts">
-import TheLanguageSwitcher from '@/components/LanguageSwitcher.vue'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import { computed } from 'vue';
 
 const routes = computed(() => [
   { name: 'home', translationKey: 'header.home' },
   { name: 'jobList', translationKey: 'header.jobList' },
 ])
+
+const authRoutes = computed(() => [
+  { name: 'login', translationKey: 'header.login' },
+  { name: 'register', translationKey: 'header.register' },
+])
+
+const logoutRoute = computed(() => [
+  { name: 'logout', translationKey: 'header.logout' },
+])
+
 </script>
 
 <style lang="scss">

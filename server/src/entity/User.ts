@@ -6,7 +6,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { Role } from './Role';
-// import { IsEmail } from 'class-validator';
+import { IsEmail } from 'class-validator';
 
 @Entity()
 export class User {
@@ -17,11 +17,14 @@ export class User {
     username: string;
 
   @Column()
-  // @IsEmail()
+  @IsEmail()
     email: string;
 
   @Column()
     password: string;
+
+  @Column()
+    confirmPassword: string;
 
   @ManyToMany(() => Role, { cascade: true })
   @JoinTable()

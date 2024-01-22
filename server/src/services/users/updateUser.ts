@@ -1,19 +1,14 @@
 import { AppDataSource } from '../../data-source';
 import { User } from '../../entity/User';
+import { getUserById } from '../../helpers/getUserById';
 
 export const updateUser = async (
   id,
-  { username, email, password }
+  { username, password, confirmPassword, role }
 ) => {
-  const existingUser = await AppDataSource.getRepository(User).findOneBy(id);
+  const existingUser = await getUserById(id);
 
-  if (!existingUser) {
-    return 'User not found.';
-  }
-
-  if (id) {
-    existingUser.id = id;
-  }
+  if (id) existingUser.id = id;
 
   if (username) {
     existingUser.username = username;
@@ -23,9 +18,9 @@ export const updateUser = async (
     existingUser.password = password;
   }
 
-  if (email) {
-    existingUser.email = email;
+  if (confirmPassword) {
+    existingUser.confirmPassword = confirmPassword;
   }
 
-  return await AppDataSource.getRepository(User).update(existingUser.id, existingUser);
+  await AppDataSource.getRepository(User).update(existingUser.id, existingUser);
 };

@@ -1,14 +1,20 @@
 <template>
   <app-main-layout>
-    <div class="page__wrapper">
+    <h3 v-if="!isAuthorized">
+      {{ 'You are not authorized' }}
+    </h3>
+    <div
+      v-if="isAuthorized"
+      class="page__wrapper"
+    >
       <app-loader v-if="isLoading" />
       <h1
-        v-if="error"
+        v-if="!filteredJobList.length && error"
       >
         {{ error.message || error }}
       </h1>
       <app-container
-        v-if="!filters.length"
+        v-if="filteredJobList.length"
         paddings-size="normal"
         with-border
         with-shadow
@@ -42,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import router from '@/router/router.ts';
 
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
@@ -53,15 +59,19 @@ import AppLoader from '../AppLoader.vue';
 import { useStore } from '@/composables/useStore.ts';
 import { useDebounce } from '@/composables/useDebounce';
 import JobListInput from '@/components/Jobs/JobListInput.vue';
+import axiosClient from '@/configs/axios/axiosClient';
 
 const store = useStore()
 const jobs = computed(() => store.state.jobs)
 const filters = computed<string[]>(() => jobs.value.filters)
 const error = computed(() => jobs.value.error)
+
+const message = ref('You are not logged in');
+const isAuthorized = ref(false);
 const isLoading = computed(() => jobs.value.isLoading)
 
-const searchInput = ref('')
-const searchText = useDebounce(searchInput)
+const searchInput = ref('');
+const searchText = useDebounce(searchInput);
 
 const filteredByInputSearch = computed(() => {
   return searchText.value.length > 1
@@ -74,18 +84,36 @@ const filteredByInputSearch = computed(() => {
       ).toLowerCase().includes(searchText.value.trim().toLowerCase())
     )
     : jobs.value.jobs
-})
+});
 
 const handleAddToFilter = (jobFilter: string) => {
   if (!filters.value.includes(jobFilter)) {
     store.dispatch('addToFilters', jobFilter)
   }
-}
+};
 
-const filteredJobList = computed(() => store.getters.filteredJobList)
-store.dispatch('fetchJobList')
+const filteredJobList = computed(() => store.getters.filteredJobList);
 
-const filteredCards = computed(() => searchText.value.length ? filteredByInputSearch.value : filteredJobList.value)
+
+const filteredCards = computed(() => searchText.value.length ? filteredByInputSearch.value : filteredJobList.value);
+
+onMounted(async () => {
+  try {
+    const { data } = await axiosClient.get('/user', { withCredentials: true });
+
+    if (data.id && data.email) {
+      isAuthorized.value = true;
+      message.value = data.username
+
+      await store.dispatch('setAuth', isAuthorized.value)
+      store.dispatch('fetchJobList');
+    }
+  } catch (error) {
+    isAuthorized.value = false;
+    await store.dispatch('setAuth', !isAuthorized.value)
+  }
+})
+
 </script>
 
 <style lang="scss" scoped>

@@ -7,7 +7,4 @@ export class UserToken {
 
   @Column()
     token: string;
-
-  @Column()
-    createdAt: string;
 }
