@@ -5,6 +5,7 @@ import { getUserById } from '../../helpers/getUserById';
 export const updateUser = async (
   id,
   { username, password, confirmPassword, role }
+
 ) => {
   const existingUser = await getUserById(id);
 

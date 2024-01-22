@@ -112,4 +112,3 @@ const loginTo = async () => {
   justify-content: center;
 }
 </style>
-../../interfaces/enums

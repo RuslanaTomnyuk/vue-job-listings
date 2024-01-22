@@ -9,6 +9,7 @@ export const logoutUser = async (req, res) => {
     const splittedToken = authHeader.split(';')[0];
     const refreshToken = splittedToken.split('auth=')[1];
 
+
     const userToken = await AppDataSource.getRepository(UserToken).findOneBy({
       token: refreshToken,
     });
