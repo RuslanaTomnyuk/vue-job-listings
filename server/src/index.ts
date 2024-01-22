@@ -1,12 +1,9 @@
 import { AppDataSource } from './data-source';
-import { JobPosition } from './entity/JobPosition';
 import dotenv from 'dotenv';
 import app from './app';
-import { User } from './entity/User';
-import { Role } from './entity/Role';
 
 dotenv.config();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 AppDataSource.initialize()
   .then(async () => {
@@ -18,39 +15,40 @@ AppDataSource.initialize()
 
     // await AppDataSource.manager.save(role);
     // console.log('Saved a new role with id: ' + role.id);
+  /*
+    console.log('Inserting a new role into the database...');
+    const adminRole = new Role();
+    adminRole.name = 'Admin';
 
-    // console.log('Inserting a new user into the database...');
-    // const adminRole = new Role();
-    // adminRole.name = 'Admin';
+    const userRole = new Role();
+    userRole.name = 'User';
 
-    // const userRole = new Role();
-    // userRole.name = 'User';
+    await AppDataSource.manager.save([adminRole, userRole]);
 
-    // await AppDataSource.manager.save([adminRole, userRole]);
+    console.log('Roles inserted into the database!');
 
-    // console.log('Roles inserted into the database!');
+    const fetchedAdminRole = await AppDataSource.getRepository(Role).findOneBy({
+      name: 'Admin',
+    });
+    const fetchedUserRole = await AppDataSource.getRepository(Role).findOneBy({
+      name: 'User',
+    });
 
-    // const fetchedAdminRole = await AppDataSource.getRepository(Role).findOneBy({
-    //   name: 'Admin',
-    // });
-    // const fetchedUserRole = await AppDataSource.getRepository(Role).findOneBy({
-    //   name: 'User',
-    // });
+    if (!fetchedAdminRole || !fetchedUserRole) {
+      console.error('Roles not found in the database.');
+      return;
+    }
 
-    // if (!fetchedAdminRole || !fetchedUserRole) {
-    //   console.error('Roles not found in the database.');
-    //   return;
-    // }
+    const user = new User();
+    user.email = 'rusia.vasia1@gmail.com';
+    user.username = 'ruslana';
+    user.password = '12345';
+    user.confirmPassword = '12345';
+    user.roles = [ fetchedAdminRole ];
 
-    // const user = new User();
-    // user.email = 'rusia.vasia1@gmail.com';
-    // user.username = 'ruslana';
-    // user.password = '12345';
-    // user.roles = [ fetchedUserRole ];
-
-    // await AppDataSource.manager.save(user);
-    // console.log('Saved a new user with id: ' + user.id);
-
+    await AppDataSource.manager.save(user);
+    console.log('Saved a new user with id: ' + user.id);
+*/
     // console.log('Inserting a new jobPosition into the database...')
     // const jobPosition = new JobPosition()
     // jobPosition.company = 'The Air Filter Company'
@@ -71,5 +69,5 @@ AppDataSource.initialize()
   .catch((error) => console.log(error));
 
 app.listen(PORT, () => {
-  console.info(`Server is running at port ${ PORT }`);
+  console.info(`Server is running at port ${PORT}`);
 });

@@ -14,7 +14,7 @@
   },
   "rules": {
     "indent": ["error", 2],
-    "template-curly-spacing": ["error", "always"],
+    "template-curly-spacing": ["error", "never"],
     "array-bracket-spacing": ["error", "always"],
     "object-curly-spacing": ["error", "always"],
     "arrow-spacing": "error",

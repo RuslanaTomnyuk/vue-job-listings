@@ -18,12 +18,14 @@ const jobs: Module<JobsStoreState, RootStoreState> = {
     jobs: [],
     error: null,
     isLoading: false,
-    filters: []
+    filters: [],
   }),
   getters: {
-    getJobPositionById: (state) => (id: number): JobPosition | undefined => {
-      return state.jobs.find((job: JobPosition) => job.id === id)
-    },
+    getJobPositionById:
+      (state) =>
+        (id: number): JobPosition | undefined => {
+          return state.jobs.find((job: JobPosition) => job.id === id);
+        },
     filteredJobList: (state) => {
       return state.jobs.filter((position: JobPosition) => {
         const positionFilters: string[] = ([] as any).concat(
@@ -33,7 +35,9 @@ const jobs: Module<JobsStoreState, RootStoreState> = {
           ...position.tools
         );
 
-        return state.filters.every((filter: string) => positionFilters.includes(filter));
+        return state.filters.every((filter: string) =>
+          positionFilters.includes(filter)
+        );
       });
     },
   },
@@ -56,8 +60,9 @@ const jobs: Module<JobsStoreState, RootStoreState> = {
     },
     removeFromFilters(state, jobFilter: string) {
       if (state.filters.includes(jobFilter)) {
-
-        state.filters = state.filters.filter((btn: string) => btn !== jobFilter);
+        state.filters = state.filters.filter(
+          (btn: string) => btn !== jobFilter
+        );
       }
     },
     clearFilters(state) {
@@ -72,18 +77,16 @@ const jobs: Module<JobsStoreState, RootStoreState> = {
         try {
           const jobs = await fetchJobs();
           commit('setPositions', jobs);
-          toast.success('Successfully fetched jobs!')
-        }
-        catch (error: unknown) {
+          toast.success('Successfully fetched jobs!');
+        } catch (error: unknown) {
           if (error instanceof ReferenceError) {
-            error = 'Something went wrong!'
+            error = 'Something went wrong!';
             commit('setError', error);
           }
-          console.error(error)
+          console.error(error);
 
           commit('setError', error);
-        }
-        finally {
+        } finally {
           commit('setIsLoading', false);
         }
       }
@@ -96,8 +99,8 @@ const jobs: Module<JobsStoreState, RootStoreState> = {
     },
     clearFilters({ commit }) {
       commit('clearFilters');
-    }
-  }
-}
+    },
+  },
+};
 
 export default jobs;

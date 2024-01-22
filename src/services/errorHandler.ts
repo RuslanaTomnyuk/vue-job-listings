@@ -8,4 +8,4 @@ const errorHandler = (err: AxiosError) => {
   toast.error('An error occurred. Please try again later.');
 };
 
-export default errorHandler
+export default errorHandler;
