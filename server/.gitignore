@@ -1,8 +1,10 @@
 .idea/
 .vscode/
-.env/
-.env.*
 node_modules/
 build/
 tmp/
 temp/
+
+# dotenv environment variables file
+.env
+.env.*
