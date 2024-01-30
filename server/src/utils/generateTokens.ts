@@ -29,7 +29,7 @@ const generateTokens = async (id, email) => {
     }
 
     // Save the new refresh token to the database
-    const newUserToken = await AppDataSource.getRepository(UserToken).save({
+    await AppDataSource.getRepository(UserToken).save({
       userId: id,
       token: refreshToken,
     });

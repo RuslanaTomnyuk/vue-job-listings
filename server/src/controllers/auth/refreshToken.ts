@@ -1,52 +1,65 @@
-import { UserToken } from '../../entity/UserToken';
 import jwt from 'jsonwebtoken';
-import { AppDataSource } from '../../data-source';
+import { getUserById } from '../../helpers/getUserById';
+import { getUserToken } from '../../services';
 
 export const refreshToken = async (req, res) => {
-  const authHeader = req.headers['cookie'];
+  const refreshToken = req.cookies['auth'] || req.body.refreshToken;
 
-  if (!authHeader) {
-    return res.status(401).json({
+  if (!refreshToken) {
+    res.status(401).json({
       success: false,
-      message: 'Invalid Authorization header. Please, log in again.',
+      message: 'Invalid refresh token. Please, log in again.',
     });
   }
 
-  const splittedToken = authHeader.split(';')[0];
-  const token = splittedToken.split('auth=')[1];
-
-  const refreshTokenFromDB = await AppDataSource.getRepository(
-    UserToken
-  ).findOneBy({ token: token });
-
   try {
-    if (refreshTokenFromDB) {
-      jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403);
+    const decodedToken: any = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET
+    );
 
-        const payload = {
-          id: user.id,
-          email: user.email,
-        };
+    const userToken = await getUserToken({ userId: decodedToken.id });
 
-        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-          expiresIn: '20m',
-        });
-
-        res.status(200).json({
-          error: false,
-          accessToken,
-          message: 'Access token created successfully',
-        });
-      });
-    } else {
-      res.status(400).json({
-        message:
-          'There is no such refresh token in the database! Please, log in again!',
+    if (!userToken) {
+      return res.status(401).json({
+        error: 'User not found',
+        message: 'Account does not exist',
       });
     }
-  } catch (err) {
-    console.log('Refresh token error', err);
-    res.status(400).send(err);
+
+    if (refreshToken !== userToken.token) {
+      return res.status(401).json({
+        message: 'Refresh token is expired or used!',
+      });
+    }
+    const user = await getUserById({ id: userToken.userId });
+
+    if (!user) {
+      // Unauthorized access
+      return res.status(401).json({
+        error: 'User not found',
+        message: 'Account does not exist',
+      });
+    }
+
+    const payload = { id: user.id, email: user.email };
+
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: '20m',
+    });
+
+    res
+      .status(200)
+      .json({
+        error: false,
+        accessToken,
+        message: 'Access token created successfully',
+      });
+  } catch (error) {
+    console.log('Refresh token error', error);
+    res.status(401).json({
+      success: false,
+      message: 'Unauthorized. Please, log in again.',
+    });
   }
 };

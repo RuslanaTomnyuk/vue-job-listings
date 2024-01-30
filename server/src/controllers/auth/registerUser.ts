@@ -3,13 +3,11 @@ import * as createUserService from '../../services/users/createUser';
 import bcrypt from 'bcrypt';
 import { sendEMail } from '../../config/nodemail';
 import { createUserSchema } from '../../validationSchemas/createUserSchema';
-import { errorHandler } from '../../errors/errorHandler';
 import { getUserByEmail } from '../../helpers/getUserByEmail';
 
 export const registerUser = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   try {
     const { error } = createUserSchema.validate(req.body);
@@ -47,7 +45,7 @@ export const registerUser = async (
       });
     }
 
-    const newUser = await createUserService.createUser({
+    await createUserService.createUser({
       username,
       email,
       password: hashedPassword,
@@ -56,16 +54,12 @@ export const registerUser = async (
     });
 
     const mailInfo = {
-      from: {
-        name: 'Job-Listings 👻',
-        address: process.env.NODEMAIL_EMAIL,
-      },
       to: `${email}`,
       subject: 'Email Verification ✔',
       text: `Hello ${username}! There, You have recently
            visited our website and entered your email. 
            Please follow the given link to verify your email 
-           http://localhost:3000/job-list  
+           http://localhost:5173/ 
            Thanks`,
     };
 
@@ -73,12 +67,13 @@ export const registerUser = async (
       status: 201,
       success: true && (await sendEMail(mailInfo)),
       message:
-        'Thank you for registering with us. Your account has been successfully created.',
-      user: newUser,
-      // token,
+        'Thank you for registration with us. Your account has been successfully created.',
     });
   } catch (error) {
-    errorHandler(error);
-    next(error);
+    res.status(500).json({
+      error: true,
+      code: 500,
+      message: 'Internal Server Error',
+    });
   }
 };

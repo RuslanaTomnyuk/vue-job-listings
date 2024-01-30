@@ -1,9 +1,12 @@
 import nodemailer from 'nodemailer';
 
-export const sendEMail = async ({ from, to, subject, text }) => {
+export const sendEMail = async ({ to, subject, text }) => {
   try {
     const mailInfo = {
-      from,
+      from: {
+        name: 'Job-Listings 👻',
+        address: process.env.NODEMAIL_EMAIL,
+      },
       to,
       subject,
       text

@@ -1,43 +1,44 @@
 import { NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { refreshToken } from '../controllers/auth/refreshToken';
+import { getUserById } from '../helpers/getUserById';
 
 export const authMiddleware = async (
   req,
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.header('Authorization');
+  try {
+    const accessToken = req.header('Authorization')?.replace('Bearer ', '');
 
-  if (!authHeader) {
-    return res
-      .status(401)
-      .json({ success: false, message: 'Invalid Authorization header. Please, log in again.' });
-  }
-
-  const accessToken = authHeader && authHeader.split(' ')[1];
-
-  if (!accessToken) {
-    if (refreshToken(req, res)) {
-      next();
+    if (!accessToken) {
+      return res.status(401).json({
+        success: false,
+        message: 'Unauthorized request.',
+      });
     }
-  }
 
-  jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) {
-      if (err.name === 'TokenExpiredError') {
-        if (refreshToken(req, res)) {
-          next();
-        }
-      }
+    const decodedToken: any = jwt.verify(
+      accessToken,
+      process.env.ACCESS_TOKEN_SECRET
+    );
 
-      // if token has been altered or has expired, return an unauthorized error
-      return res
-        .status(401)
-        .json({ message: 'This session has expired. Please login' });
-    } else {
-      req.user = user;
-      next();
+    const user = await getUserById({ id: +decodedToken.id });
+
+    if (!user) {
+      return res.status(401).json({
+        message: 'Invalid Access Token!',
+      });
     }
-  });
+
+    const { password, confirmPassword, ...userData } = user;
+
+    req.user = userData;
+    next();
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: 'Unauthorized!',
+    });
+  }
+  
 };

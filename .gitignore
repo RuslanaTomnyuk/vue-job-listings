@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+server/node_modules
 dist
 dist-ssr
 *.local
@@ -15,6 +16,7 @@ dist-ssr
 # dotenv environment variables file
 .env
 .env.*
+server/.env
 
 # Editor directories and files
 .vscode/*

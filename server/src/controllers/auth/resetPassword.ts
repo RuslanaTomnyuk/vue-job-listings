@@ -1,23 +1,43 @@
 import { NextFunction, Request, Response } from 'express';
-import { AppDataSource } from '../../data-source';
-import { User } from '../../entity/User';
-import { sendEMail } from '../../config/nodemail';
+import jwt from 'jsonwebtoken';
+import { getUserById } from '../../helpers/getUserById';
+import { updateUserPassword } from '../../services/users/updateUserPassword';
+import bcrypt from 'bcrypt';
 
-// not implemented yet
 export const resetPassword = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { username, email, password } = req.body;
+    const refreshToken = req.cookies['auth'];
 
-    if (!username || !email || !password) {
+    const { password, confirmPassword } = req.body;
+
+    if (!password || !confirmPassword) {
       return res.sendStatus(400);
     }
 
-    const user = await AppDataSource.getRepository(User).findOneBy({
-      email,
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        status: 400,
+        message: 'Password and ConfirmPassword do not match!',
+      });
+    }
+
+    const verifiedUser: any = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET
+    );
+
+    if (!verifiedUser) {
+      return res.status(401).json({
+        message: 'Unauthenticated',
+      });
+    }
+
+    const user = await getUserById({
+      id: verifiedUser.id,
     });
 
     if (!user) {
@@ -27,41 +47,25 @@ export const resetPassword = async (
       });
     }
 
-    const mailInfo = {
-      from: {
-        name: 'Job-Listings 👻',
-        address: process.env.NODEMAIL_EMAIL,
-      },
-      to: `${email}`,
-      subject: 'Email Verification ✔',
-      text: `Hello ${username}! There, You have recently
-           visited our website and entered your email. 
-           Please follow the given link to verify your email 
-           http://localhost:3000/job-list  
-           Thanks`,
-    };
+    const hashedPassword = await bcrypt.hash(password, +process.env.SALT);
+    const hashedConfirmPassword = await bcrypt.hash(
+      confirmPassword,
+      +process.env.SALT
+    );
+
+    await updateUserPassword(
+      verifiedUser.id,
+      hashedPassword,
+      hashedConfirmPassword
+    );
 
     res.status(201).json({
       status: 201,
-      success: true && sendEMail(mailInfo),
-      message: 'password reset Successfully',
-      user: user,
+      success: true,
+      message: 'User password updated Successfully',
     });
   } catch (error) {
     console.error('Error creating user:', error);
     next(error);
   }
 };
-
-/*
-export function changeUserPassword(body) {
-  return fetch.perform("/api/v1.0/profile/change-password", {
-    method: "POST",
-    body: JSON.stringify({
-      currentPassword: body.currentPassword,
-      newPassword: body.newPassword,
-      confirmPassword: body.confirmPassword
-    })
-  });
-}
-*/

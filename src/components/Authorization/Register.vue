@@ -5,68 +5,65 @@
         width="360"
         max-width="600"
       >
-        <v-toolbar
-          dark
-          color="teal-lighten-3"
-        >
-          <v-toolbar-title>Registration Form</v-toolbar-title>
-        </v-toolbar>
+        <v-card-title class="text-center">
+          {{ $t('register.registerForm') }}
+        </v-card-title>
         <v-card-text>
-          <v-form>
+          <v-form @submit.prevent="submitRegistration">
             <v-text-field
               v-model="formData.username"
-              name="username"
-              label="User name"
-              type="text"
+              :label="$t('register.username')"
+              :rules="[validationRules.required]"
               density="compact"
+              variant="solo"
             />
             <v-text-field
               v-model="formData.email"
-              name="email"
-              label="E-mail"
-              type="text"
-              density="compact"
+              prepend-inner-icon="mdi-email"
+              :label="$t('register.email')"
+              :rules="[validationRules.email, validationRules.required]"
+              variant="solo"
+              persistent-hint
+              density="compact"              
             />
             <v-text-field
               v-model="formData.password"
-              name="password"
-              label="Password"
+              :label="$t('register.password')"
               type="password"
+              variant="solo"
+              :rules="[validationRules.password, validationRules.required]"
+              prepend-inner-icon="mdi-key"
               density="compact"
             />
             <v-text-field
               v-model="formData.confirmPassword"
-              name="confirmPassword"
-              label="Confirm Your Password"
+              :label="$t('register.confirmPassword')"
               type="password"
+              variant="solo"
+              :rules="[validationRules.confirmPassword, validationRules.required]"
+              prepend-inner-icon="mdi-key"
               density="compact"
             />
             <v-text-field
               v-model="formData.role"
               name="role"
-              label="Role"
-              type="text"
+              :label="$t('register.role')"
               density="compact"
+              variant="solo"
             />
+            <v-btn
+              color="teal-lighten-3"
+              variant="elevated"
+              type="submit"
+              block
+              class="mt-2"
+            >
+              {{ $t('register.register') }}
+            </v-btn>
           </v-form>
         </v-card-text>
 
         <v-divider />
-        <v-card-actions>
-          <v-spacer />
-          <app-button
-            :with-hover="withHover"
-            title="Complete Registration"
-            :handle-click="registerUserHandler"
-          />
-        <!-- <v-btn color="success">
-          Complete Registration
-          <v-icon
-            icon="mdi-chevron-right"
-            end
-          />
-        </v-btn> -->
-        </v-card-actions>
       </v-card>
     </div>
   </app-main-layout>
@@ -76,7 +73,7 @@
 import { reactive } from 'vue';
 import router from '@/router/router';
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
-import AppButton from '../AppButton.vue';
+import { validationRules } from '../../helpers/validationRules';
 import axiosClient from '@/configs/axios/axiosClient';
 
 interface RegisterProps {
@@ -101,8 +98,7 @@ const formData: FormData = reactive({
   role: ''
 })
 
-const registerUserHandler = async () => {
-
+const submitRegistration = async () => {
   try {
     const username = formData.username
     const email = formData.email
@@ -122,13 +118,6 @@ const registerUserHandler = async () => {
   }
 
 }
-// const fields = computed(() => [
-//   { key: FORM_FIELDS.FIRST_NAME, validationType: AppValidationTypes.firstName, isRequired: true },
-//   { key: 'email', validationType: AppValidationTypes.email, isRequired: true },
-//   { key: 'password', validationType: AppValidationTypes.password, isRequired: true },
-//   { key: 'confirmPassword', validationType: AppValidationTypes.confirmPassword, isRequired: true },
-// ]);
-
 </script>
 
 <style lang="scss">
@@ -138,4 +127,3 @@ const registerUserHandler = async () => {
   justify-content: center;
 }
 </style>
-../../interfaces/enums

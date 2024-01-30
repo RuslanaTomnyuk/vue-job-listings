@@ -9,7 +9,6 @@ export const logoutUser = async (req, res) => {
     const splittedToken = authHeader.split(';')[0];
     const refreshToken = splittedToken.split('auth=')[1];
 
-
     const userToken = await AppDataSource.getRepository(UserToken).findOneBy({
       token: refreshToken,
     });
@@ -24,7 +23,7 @@ export const logoutUser = async (req, res) => {
 
     res
       .status(200)
-      .clearCookie('auth', '', { maxAge: 0 })
+      .clearCookie('auth')
       .json({ error: false, message: 'Logged Out Successfully' });
   } catch (err) {
     console.log('Log Out User Error!', err);

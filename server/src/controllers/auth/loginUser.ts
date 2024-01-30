@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { getUserByEmail } from '../../helpers/getUserByEmail';
@@ -7,8 +7,7 @@ import { UserToken } from '../../entity/UserToken';
 
 export const loginUser = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   try {
     // do validation for login
@@ -20,13 +19,11 @@ export const loginUser = async (
       });
     }
 
-    const user = await getUserByEmail({
-      email,
-    });
+    const user = await getUserByEmail({ email });
 
     if (!user) {
       // Unauthorized access
-      res.status(401).json({
+      return res.status(401).json({
         error: 'User not found',
         message: 'Account does not exist',
       });
@@ -37,41 +34,44 @@ export const loginUser = async (
     // if user exists - validate password
     const isPasswordValid = await bcrypt.compare(password, userPassword);
 
-    const payload = { id: userData.id, email: userData.email };
+    const payload = { id: user.id, email: user.email };
+    // console.log('payload -login', payload);
 
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: '20s',
+      expiresIn: '30s',
     });
 
     const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
       expiresIn: '1d',
     });
 
-    isPasswordValid
-      ? (await AppDataSource.getRepository(UserToken).save({
+    if (isPasswordValid) {
+      await AppDataSource.getRepository(UserToken).save({
         userId: user.id,
         token: refreshToken,
-      })) &&
-        res
-          .status(200)
-          .cookie('auth', refreshToken, {
-            secure: true,
-            httpOnly: true,
-            sameSite: 'strict',
-            maxAge: 50 * 60 * 1000,
-          }) // set the token to response header, so that the client sends it back on each subsequent request
-          .json({
-            error: false,
-            accessToken,
-            refreshToken,
-            message: 'Logged in successfully',
-            userData,
-          })
-      : res.status(401).json({
+      });
+      res
+        .status(200)
+        .setHeader('Authorization', `Bearer ${accessToken}`) // set the token to response header, so that the client sends it back on each subsequent request
+        .cookie('auth', refreshToken, {
+          secure: true,
+          httpOnly: true,
+          sameSite: 'strict',
+          maxAge: 24 * 60 * 60 * 1000,
+        })
+        .json({
+          error: false,
+          accessToken,
+          message: 'Logged in successfully',
+          userData,
+        });
+    } else {
+      res.status(401).json({
         error: true,
         message:
-            'Invalid email or password. Please try again with the correct credentials.',
+          'Invalid email or password. Please try again with the correct credentials.',
       });
+    }
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({
@@ -79,6 +79,5 @@ export const loginUser = async (
       code: 500,
       message: 'Internal Server Error',
     });
-    next(error);
   }
 };

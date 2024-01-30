@@ -16,7 +16,7 @@ const options = {
   timeout: 1500,
 };
 
-globalErrorHandler(app);
+// globalErrorHandler(app);
 
 app
   .use(router)

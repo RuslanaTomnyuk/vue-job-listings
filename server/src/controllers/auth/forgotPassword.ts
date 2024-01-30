@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-
-import { AppDataSource } from '../../data-source';
-import { User } from '../../entity/User';
+import { sendEMail } from '../../config/nodemail';
+import { getUserByEmail } from '../../helpers/getUserByEmail';
+import jwt from 'jsonwebtoken';
 
 // not implemented yet
 export const forgotPassword = async (
@@ -10,15 +10,13 @@ export const forgotPassword = async (
   next: NextFunction
 ) => {
   try {
-    const { username, email, password } = req.body;
+    const { email } = req.body;
 
-    if (!username || !email || !password) {
+    if (!email) {
       return res.sendStatus(400);
     }
 
-    const user = await AppDataSource.getRepository(User).findOneBy({
-      email,
-    });
+    const user = await getUserByEmail({ email });
 
     if (!user) {
       res.status(404).json({
@@ -27,33 +25,27 @@ export const forgotPassword = async (
       });
     }
 
-    // const newUser = await createUserService.createUser({
-    //   username,
-    //   email,
-    //   password: await bcrypt.hash(password, 15),
-    //   role,
-    // });
+    const payload = { id: user.id, email: user.email };
 
-    // const mailInfo = {
-    //   from: {
-    //     name: 'Job-Listings 👻',
-    //     address: process.env.NODEMAIL_EMAIL,
-    //   },
-    //   to: `${email}`,
-    //   subject: 'Email Verification ✔',
-    //   text: `Hello ${username}! There, You have recently
-    //        visited our website and entered your email.
-    //        Please follow the given link to verify your email
-    //        http://localhost:3000/job-list
-    //        Thanks`,
-    // };
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: '10m',
+    });
 
-    // res.status(201).json({
-    //   status: 201,
-    //   success: true && sendEMail(mailInfo),
-    //   message: 'User created Successfully',
-    //   user: newUser,
-    // });
+    const mailInfo = {
+      to: `${email}`,
+      subject: 'Reset Password Link ✔',
+      text: `Hello! There, You have recently
+           visited our website to reset password and entered your email. 
+           Please follow the given link to reset your email 
+           http://localhost:5173/auth/reset-password/${user.id}/${accessToken}  
+           Thanks`,
+    };
+
+    res.status(201).json({
+      status: 201,
+      success: true && (await sendEMail(mailInfo)),
+      message: 'Success'
+    });
   } catch (error) {
     console.error('Error occurred while restoring a password', error);
     next(error);

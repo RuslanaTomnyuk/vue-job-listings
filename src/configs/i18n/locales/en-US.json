@@ -8,7 +8,9 @@
     "jobList": "Job List",
     "logout": "Logout",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "cancel": "Cancel",
+    "save": "Save"
   },
   "pages": {
     "mainPage": "Main Page",
@@ -21,6 +23,24 @@
   "jobListCardDetails": {
     "back": "< Back",
     "home": "Home"
+  },
+  "login": {
+    "loginForm": "Login Form",
+    "submit": "Submit",
+    "email": "E-mail",
+    "password": "Password",
+    "haveAccount": "You don't have an account?"
+  },
+  "register": {
+    "register": "Register",
+    "registerForm": "Registration Form",
+    "email": "E-mail",
+    "password": "Password",
+    "confirmPassword": "Confirm Your Password",
+    "username": "User name",
+    "role": "Role",
+    
+    "completeRegistration": "Complete Registration"
   },
   "notFound": {
     "goHome": "Go back home"

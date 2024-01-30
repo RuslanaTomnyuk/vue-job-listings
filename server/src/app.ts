@@ -8,6 +8,7 @@ import usersRouter from './routes/users';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import { authMiddleware } from './middlewares/authMiddleware';
+import { errorsHandler } from './middlewares/errorsHandler';
 
 const app = express();
 const apiRouter = express.Router();
@@ -33,8 +34,10 @@ app.use(bodyParser.json());
 app.use('/', apiRouter);
 
 apiRouter.use('/auth', authRouter);
-apiRouter.use('', usersRouter);
+apiRouter.use('', authMiddleware, usersRouter);
 
 apiRouter.use('/job-list', authMiddleware, jobsRouter);
+
+app.use(errorsHandler);
 
 export default app;

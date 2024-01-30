@@ -70,7 +70,6 @@ export const createUser = async (
     });
   } catch (error) {
     errorHandler(error);
-    // console.error('Error creating user:', error);
     next(error);
   }
 };

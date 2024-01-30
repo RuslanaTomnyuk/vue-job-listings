@@ -1,32 +1,24 @@
 <template>
   <app-main-layout>
     <div class="wrapper">
-      <v-card
-        width="360"
-        max-width="600"
-      >
-        <v-toolbar
-          dark
+      <v-card-actions>
+        <v-btn
+          variant="outlined"
           color="teal-lighten-3"
+          @click="logout"
         >
-          <v-toolbar-title>
-            <app-button
-              :with-hover="withHover"
-              title="Log out"
-              :handle-click="logout"
-            />
-          </v-toolbar-title>
-        </v-toolbar>
-      </v-card>
+          {{ $t('header.logout') }}
+        </v-btn>
+      </v-card-actions>
     </div>
   </app-main-layout>
 </template>
 
 <script setup lang="ts">
-import AppMainLayout from '@/layouts/AppMainLayout.vue';
-import AppButton from '../AppButton.vue';
-import axiosClient from '@/configs/axios/axiosClient';
 import router from '@/router/router';
+import AppMainLayout from '@/layouts/AppMainLayout.vue';
+import axiosClient from '@/configs/axios/axiosClient';
+import { useStore } from '@/composables/useStore.ts';
 
 interface LogoutProps {
   withHover?: boolean;
@@ -34,12 +26,16 @@ interface LogoutProps {
 
 defineProps<LogoutProps>()
 
+const store = useStore()
+
 const logout = async() => {
   try {
     await axiosClient.get('/auth/logout', { withCredentials: true });
 
     localStorage.removeItem('user-data');
-    axiosClient.defaults.headers.common['Authorization'] = '';
+    axiosClient.defaults.headers.common['Authorization'] = 'Bearer ';
+
+    await store.dispatch('setAuth', false)
     
     await router.push('/auth/login')
   } catch (error) {

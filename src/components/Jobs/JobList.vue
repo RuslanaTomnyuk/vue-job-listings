@@ -1,10 +1,11 @@
 <template>
   <app-main-layout>
-    <h3 v-if="!isAuthorized">
+    <h3 v-if="!auth">
+      <app-loader v-if="isLoading" />
       {{ 'You are not authorized' }}
     </h3>
     <div
-      v-if="isAuthorized"
+      v-if="auth"
       class="page__wrapper"
     >
       <app-loader v-if="isLoading" />
@@ -52,14 +53,14 @@ import { computed, ref, onMounted } from 'vue';
 import router from '@/router/router.ts';
 
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
-import JobListFilters from '@/components/Jobs/JobListFilters.vue';
-import JobListCard from '@/components/Jobs/JobListCard.vue';
 import AppContainer from '../AppContainer.vue';
 import AppLoader from '../AppLoader.vue';
+import JobListFilters from '@/components/Jobs/JobListFilters.vue';
+import JobListCard from '@/components/Jobs/JobListCard.vue';
+import JobListInput from '@/components/Jobs/JobListInput.vue';
 import { useStore } from '@/composables/useStore.ts';
 import { useDebounce } from '@/composables/useDebounce';
-import JobListInput from '@/components/Jobs/JobListInput.vue';
-import axiosClient from '@/configs/axios/axiosClient';
+import getUser from '@/services/getUser';
 
 const store = useStore()
 const jobs = computed(() => store.state.jobs)
@@ -68,6 +69,9 @@ const error = computed(() => jobs.value.error)
 
 const message = ref('You are not logged in');
 const isAuthorized = ref(false);
+
+const auth = computed(() => store.state.auth.authenticated);
+
 const isLoading = computed(() => jobs.value.isLoading)
 
 const searchInput = ref('');
@@ -94,23 +98,25 @@ const handleAddToFilter = (jobFilter: string) => {
 
 const filteredJobList = computed(() => store.getters.filteredJobList);
 
-
 const filteredCards = computed(() => searchText.value.length ? filteredByInputSearch.value : filteredJobList.value);
 
 onMounted(async () => {
   try {
-    const { data } = await axiosClient.get('/user', { withCredentials: true });
+    const response = await getUser();
 
-    if (data.id && data.email) {
-      isAuthorized.value = true;
-      message.value = data.username
+    if (response) {
+      if (response?.data?.id && response?.data?.email) {
+        isAuthorized.value = true;
+        message.value = response.data.username
 
-      await store.dispatch('setAuth', isAuthorized.value)
-      store.dispatch('fetchJobList');
+        await store.dispatch('setAuth', isAuthorized.value)
+        await store.dispatch('fetchJobList');
+      }
     }
   } catch (error) {
+    console.log('error', error);
     isAuthorized.value = false;
-    await store.dispatch('setAuth', !isAuthorized.value)
+    await store.dispatch('setAuth', isAuthorized.value)
   }
 })
 

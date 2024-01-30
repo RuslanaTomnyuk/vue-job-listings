@@ -1,34 +1,19 @@
-import { NextFunction, Request, Response } from 'express';
-import * as getUserService from '../../services/users/getUser';
-import jwt from 'jsonwebtoken';
+import { Response } from 'express';
+import { getUserByEmail } from '../../helpers/getUserByEmail';
 
-export const getUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getUser = async (req, res: Response) => {
   try {
-    const cookies = req.cookies['auth'];
+    const { email } = req.user;
+    const user = await getUserByEmail({ email: email });
 
-    const verifiedUser: any = jwt.verify(
-      cookies,
-      process.env.REFRESH_TOKEN_SECRET
-    );
-
-    if (!verifiedUser) {
-      return res.status(401).json({
-        message: 'Unauthenticated',
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found!',
       });
     }
 
-    const user = await getUserService.getUser({
-      id: verifiedUser.id,
-    });
-
-    const { password, confirmPassword, ...userData } = user;
-
-    res.status(200).send(userData);
+    return res.status(201).json(req.user);
   } catch (error) {
-    next(error);
+    res.status(404).json({ error: 'Cannot Find User Data' });
   }
 };

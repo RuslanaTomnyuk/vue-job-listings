@@ -21,20 +21,21 @@ axiosClient.interceptors.response.use(
   async (error) => {
     if (error.response && error.response.status === 401 && !refresh) {
       refresh = true;
-      const { status, statusText, data } = await axiosClient.post(
+      const response = await axiosClient.post(
         '/auth/refresh-token',
         {},
         {
           withCredentials: true,
         }
       );
+      console.log('response - axios client', response);
 
-      if (status && status === 403) {
-        return statusText;
+      if (response?.status && response?.status === 403) {
+        return response.statusText;
       }
 
-      if (status && status === 200) {
-        storeAccessToken(data.accessToken);
+      if (response?.status && response?.status === 200) {
+        storeAccessToken(response?.data.accessToken);
         return axiosClient(error.config);
       }
     }

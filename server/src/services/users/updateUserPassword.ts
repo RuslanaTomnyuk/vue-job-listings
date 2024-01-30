@@ -2,18 +2,10 @@ import { AppDataSource } from '../../data-source';
 import { User } from '../../entity/User';
 import { getUserById } from '../../helpers/getUserById';
 
-export const updateUser = async (
-  id,
-  username,
-  password,
-  confirmPassword,
-  existingUser
-) => {
-  if (id) existingUser.id = id;
+export const updateUserPassword = async (id, password, confirmPassword) => {
+  const existingUser = await getUserById({ id: +id });
 
-  if (username) {
-    existingUser.username = username;
-  }
+  if (id) existingUser.id = id;
 
   if (password) {
     existingUser.password = password;
