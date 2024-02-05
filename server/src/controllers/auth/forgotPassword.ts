@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { sendEMail } from '../../config/nodemail';
 import { getUserByEmail } from '../../helpers/getUserByEmail';
-import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import crypto from 'crypto';
+import { AppDataSource } from '../../data-source';
+import { User } from '../../entity/User';
 
-// not implemented yet
 export const forgotPassword = async (
   req: Request,
   res: Response,
@@ -13,7 +15,7 @@ export const forgotPassword = async (
     const { email } = req.body;
 
     if (!email) {
-      return res.sendStatus(400);
+      res.sendStatus(400);
     }
 
     const user = await getUserByEmail({ email });
@@ -25,29 +27,44 @@ export const forgotPassword = async (
       });
     }
 
-    const payload = { id: user.id, email: user.email };
+    const resetToken = crypto.randomBytes(32).toString('hex');
 
-    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: '10m',
-    });
+    const hashedResetToken = await bcrypt.hash(resetToken, +process.env.SAULT);
+
+    user.passwordResetToken = hashedResetToken;
+    user.passwordResetTokenExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+    await AppDataSource.getRepository(User).update(user.id, { ...user });
+
+    const resetPasswordLink = `${process.env.CLIENT_URL}/auth/reset-password/${user.id}/${resetToken}`;
 
     const mailInfo = {
       to: `${email}`,
       subject: 'Reset Password Link ✔',
-      text: `Hello! There, You have recently
-           visited our website to reset password and entered your email. 
-           Please follow the given link to reset your email 
-           http://localhost:5173/auth/reset-password/${user.id}/${accessToken}  
+      text: `Hello! We've received a password reset request. Please follow the given link to reset your password\n\n
+      ${resetPasswordLink}\n
+      This password link will be valid only 20 minutes.\n\n
            Thanks`,
     };
 
-    res.status(201).json({
-      status: 201,
-      success: true && (await sendEMail(mailInfo)),
-      message: 'Success'
-    });
+    try {
+      await sendEMail(mailInfo);
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: 'Password reset link sent to the user email.',
+      });
+    } catch (error) {
+      user.passwordResetToken = null;
+      user.passwordResetTokenExpires = null;
+      await AppDataSource.getRepository(User).save(user);
+      next(error);
+    }
   } catch (error) {
-    console.error('Error occurred while restoring a password', error);
+    console.error(
+      'There was an error sending password reset email. Please, try again later!',
+      error
+    );
     next(error);
   }
 };

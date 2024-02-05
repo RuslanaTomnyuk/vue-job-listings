@@ -67,7 +67,16 @@
           </v-list>
           <v-list v-if="!auth">
             <v-list-item>
-              {{ 'You are not Logged In' }}
+              <div>{{ 'You are not Logged In' }}</div>
+              
+              <v-btn
+                color="teal-lighten-3"
+                variant="text"
+                to="/auth/profile"
+              >              
+                Profile
+              </v-btn>
+              
               <v-btn
                 color="teal-lighten-3"
                 variant="text"
@@ -78,22 +87,6 @@
             </v-list-item>
           </v-list>
           <v-divider />
-          <v-card-actions>
-            <v-spacer />
-            <v-btn
-              variant="text"
-              @click="menu = false"
-            >
-              {{ $t('header.cancel') }}
-            </v-btn>
-            <v-btn
-              color="teal-lighten-3"
-              variant="text"
-              @click="menu = false"
-            >
-              {{ $t('header.save') }}
-            </v-btn>
-          </v-card-actions>
           <v-divider />
           <v-card-actions v-if="auth">
             <v-btn
@@ -122,17 +115,15 @@ const store = useStore()
 const auth = computed(() => store.state.auth.authenticated);
 const fav = ref(true)
 const menu = ref(false)
+const user = computed(() => store.getters.user)
 
-const userFromLocalStorage = computed(() => localStorage.getItem('user-data'));
-const user = userFromLocalStorage.value && JSON.parse(userFromLocalStorage.value)
 
 const logout = async() => {
   try {
     await axiosClient.get('/auth/logout', { withCredentials: true });
-
     localStorage.removeItem('user-data');
     axiosClient.defaults.headers.common['Authorization'] = '';
-    
+
     await router.push('/auth/login')
   } catch (error) {
     console.log('Error while logging out', error);

@@ -19,8 +19,15 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import AppMainLayout from '../layouts/AppMainLayout.vue';
+import getUser from '@/services/getUser';
 const homeImage = '/images/find-job.jpg';
+
+onMounted(async () => {
+  await getUser();
+})
+
 </script>
 
 <style lang="scss" scoped>

@@ -29,20 +29,24 @@
             <v-text-field
               v-model="formData.password"
               :label="$t('register.password')"
-              type="password"
+              :type="passwordFieldType"
               variant="solo"
               :rules="[validationRules.password, validationRules.required]"
               prepend-inner-icon="mdi-key"
               density="compact"
+              :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              @click:append-inner="() => (showPassword = !showPassword)"
             />
             <v-text-field
               v-model="formData.confirmPassword"
               :label="$t('register.confirmPassword')"
-              type="password"
+              :type="confirmPasswordFieldType"
               variant="solo"
               :rules="[validationRules.confirmPassword, validationRules.required]"
               prepend-inner-icon="mdi-key"
               density="compact"
+              :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              @click:append-inner="() => (showConfirmPassword = !showConfirmPassword)"
             />
             <v-text-field
               v-model="formData.role"
@@ -70,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, computed, ref } from 'vue';
 import router from '@/router/router';
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
 import { validationRules } from '../../helpers/validationRules';
@@ -97,6 +101,11 @@ const formData: FormData = reactive({
   confirmPassword: '',
   role: ''
 })
+
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
+const passwordFieldType = computed(() => showPassword.value ? 'text' : 'password');
+const confirmPasswordFieldType = computed(() => showConfirmPassword.value ? 'text' : 'password');
 
 const submitRegistration = async () => {
   try {

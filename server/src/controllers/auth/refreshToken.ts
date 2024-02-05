@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
 import { getUserById } from '../../helpers/getUserById';
-import { getUserToken } from '../../services';
+import { getUserToken } from '../../helpers/getUserToken';
 
 export const refreshToken = async (req, res) => {
   const refreshToken = req.cookies['auth'] || req.body.refreshToken;
 
   if (!refreshToken) {
-    res.status(401).json({
+    return res.status(401).json({
       success: false,
       message: 'Invalid refresh token. Please, log in again.',
     });
@@ -51,12 +51,12 @@ export const refreshToken = async (req, res) => {
     res
       .status(200)
       .json({
+        status: 200,
         error: false,
         accessToken,
         message: 'Access token created successfully',
       });
   } catch (error) {
-    console.log('Refresh token error', error);
     res.status(401).json({
       success: false,
       message: 'Unauthorized. Please, log in again.',

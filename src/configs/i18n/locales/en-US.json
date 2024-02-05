@@ -29,7 +29,8 @@
     "submit": "Submit",
     "email": "E-mail",
     "password": "Password",
-    "haveAccount": "You don't have an account?"
+    "haveAccount": "You don't have an account?",
+    "forgotPassword": "Forgot Password?"
   },
   "register": {
     "register": "Register",

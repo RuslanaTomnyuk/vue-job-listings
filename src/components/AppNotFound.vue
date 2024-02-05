@@ -3,7 +3,7 @@
     <div class="not-found">
       <div class="not-found__image">
         <img
-          src="public/images/404-error.svg"
+          src="http://localhost:5173/public/images/404-error.svg"
           alt="404-error"
           class="image"
         >

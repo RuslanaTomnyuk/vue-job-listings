@@ -2,22 +2,20 @@ import { RootStoreState } from '@/store/modules/index.ts';
 import { Module } from 'vuex';
 
 export interface AuthStoreState {
-  authenticated: false;
+  authenticated: boolean;
 }
 
 const auth: Module<AuthStoreState, RootStoreState> = {
   state: () => ({
     authenticated: false,
   }),
-  getters: {},
+  getters: { authenticated: (state) => state.authenticated },
   mutations: {
-    SET_AUTH: (state: { authenticated: boolean }, auth: boolean) =>
-      state.authenticated = auth,
+    SET_AUTH: (state, authenticated) => (state.authenticated = authenticated),
   },
   actions: {
-    setAuth: ({ commit }, auth: boolean) => {
-      commit('SET_AUTH', auth)
-    }
+    setAuth: (context, authenticated) =>
+      context.commit('SET_AUTH', authenticated),
   },
 };
 

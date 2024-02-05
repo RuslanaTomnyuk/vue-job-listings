@@ -1,6 +1,5 @@
 import { AppDataSource } from '../../data-source';
 import { User } from '../../entity/User';
-import { getUserById } from '../../helpers/getUserById';
 
 export const updateUser = async (
   id,

@@ -20,12 +20,22 @@ export class User {
   @IsEmail()
     email: string;
 
+  // @Column({ select: false })
   @Column()
     password: string;
 
   @Column()
     confirmPassword: string;
 
+  @Column({ nullable: true })
+    passwordChangeAt: Date;
+
+  @Column({ nullable: true })
+    passwordResetToken: string;
+
+  @Column({ nullable: true })
+    passwordResetTokenExpires: Date;
+  
   @ManyToMany(() => Role, { cascade: true })
   @JoinTable()
     roles: Role[];

@@ -1,11 +1,6 @@
 <template>
   <app-main-layout>
-    <h3 v-if="!auth">
-      <app-loader v-if="isLoading" />
-      {{ 'You are not authorized' }}
-    </h3>
     <div
-      v-if="auth"
       class="page__wrapper"
     >
       <app-loader v-if="isLoading" />
@@ -49,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import router from '@/router/router.ts';
 
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
@@ -62,15 +57,11 @@ import { useStore } from '@/composables/useStore.ts';
 import { useDebounce } from '@/composables/useDebounce';
 import getUser from '@/services/getUser';
 
+
 const store = useStore()
 const jobs = computed(() => store.state.jobs)
 const filters = computed<string[]>(() => jobs.value.filters)
-const error = computed(() => jobs.value.error)
-
-const message = ref('You are not logged in');
-const isAuthorized = ref(false);
-
-const auth = computed(() => store.state.auth.authenticated);
+const error = computed(() => jobs.value.error);
 
 const isLoading = computed(() => jobs.value.isLoading)
 
@@ -100,26 +91,11 @@ const filteredJobList = computed(() => store.getters.filteredJobList);
 
 const filteredCards = computed(() => searchText.value.length ? filteredByInputSearch.value : filteredJobList.value);
 
+
 onMounted(async () => {
-  try {
-    const response = await getUser();
-
-    if (response) {
-      if (response?.data?.id && response?.data?.email) {
-        isAuthorized.value = true;
-        message.value = response.data.username
-
-        await store.dispatch('setAuth', isAuthorized.value)
-        await store.dispatch('fetchJobList');
-      }
-    }
-  } catch (error) {
-    console.log('error', error);
-    isAuthorized.value = false;
-    await store.dispatch('setAuth', isAuthorized.value)
-  }
+  await getUser();
+  await store.dispatch('fetchJobList');
 })
-
 </script>
 
 <style lang="scss" scoped>

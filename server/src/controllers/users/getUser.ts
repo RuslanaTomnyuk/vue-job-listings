@@ -12,7 +12,7 @@ export const getUser = async (req, res: Response) => {
       });
     }
 
-    return res.status(201).json(req.user);
+    return res.status(200).json(req.user);
   } catch (error) {
     res.status(404).json({ error: 'Cannot Find User Data' });
   }

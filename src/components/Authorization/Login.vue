@@ -8,7 +8,6 @@
         <v-card-title class="text-center">
           {{ $t('login.loginForm') }}
         </v-card-title>
-        <!-- </v-toolbar> -->
         <v-card-text>
           <v-form @submit.prevent="submit">
             <v-text-field
@@ -23,12 +22,19 @@
             <v-text-field
               v-model="formData.password"
               :label="$t('login.password')"
-              type="password"
+              :type="passwordFieldType"
               variant="solo"
               :rules="[validationRules.password, validationRules.required]"
               prepend-inner-icon="mdi-key"
               density="compact"
+              :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              @click:append-inner="() => (showPassword = !showPassword)"
             />
+            <p class="text-right">
+              <router-link to="/auth/forgot-password">
+                {{ $t('login.forgotPassword') }}
+              </router-link>
+            </p>
             <v-divider />
             <v-btn
               color="teal-lighten-3"
@@ -57,11 +63,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, computed, ref } from 'vue';
 import router from '@/router/router';
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
-import axiosClient, { storeAccessToken } from '@/configs/axios/axiosClient';
 import { validationRules } from '../../helpers/validationRules';
+import loginUser from '@/services/loginUser';
+import errorHandler from '@/services/errorHandler';
+import { AxiosError } from 'axios';
 
 interface LoginProps {
   withHover?: boolean;
@@ -79,23 +87,21 @@ const formData: FormData = reactive({
   password: '',
 })
 
+const showPassword = ref(false);
+const passwordFieldType = computed(() => showPassword.value ? 'text' : 'password');
+
 const submit = async () => {
   try {
     const email = formData.email;
     const password = formData.password;
 
-    const response = await axiosClient.post('/auth/login', { email, password }, {
-      withCredentials: true,
-    });
+    await loginUser(email, password)
 
-    if (response?.data) {      
-      storeAccessToken(response.data.accessToken);
-      localStorage.setItem('user-data', JSON.stringify(response.data.userData));
-
-      await router.push('/')
-    }
+    await router.push('/')
+    // }
   } catch (error) {
     console.log('error while login', error)
+    errorHandler(error as AxiosError);
   }
 }
 

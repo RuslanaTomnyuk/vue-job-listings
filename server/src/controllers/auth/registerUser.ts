@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import * as createUserService from '../../services/users/createUser';
 import bcrypt from 'bcrypt';
 import { sendEMail } from '../../config/nodemail';
@@ -15,15 +15,14 @@ export const registerUser = async (
     if (error) {
       throw new Error(error.message);
     }
+
     const { username, email, password, confirmPassword, role } = req.body;
 
     if (!username || !email || !password || !confirmPassword) {
       return res.sendStatus(400);
     }
 
-    const userExists = await getUserByEmail({
-      email,
-    });
+    const userExists = await getUserByEmail({ email });
 
     if (userExists) {
       return res.status(400).json({
@@ -63,9 +62,11 @@ export const registerUser = async (
            Thanks`,
     };
 
+    sendEMail(mailInfo);
+
     res.status(201).json({
       status: 201,
-      success: true && (await sendEMail(mailInfo)),
+      success: true,
       message:
         'Thank you for registration with us. Your account has been successfully created.',
     });

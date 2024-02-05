@@ -1,21 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
+import { computed } from 'vue';
+import store from '@/store';
 import Home from '@/pages/HomePage.vue';
 import JobList from '@/pages/JobListPage.vue';
 import NotFound from '../pages/NotFoundPage.vue';
 import JobListCardDetails from '@/components/Jobs/JobListCardDetails.vue';
 import Register from '@/components/Authorization/Register.vue';
 import Login from '@/components/Authorization/Login.vue';
+import Profile from '@/components/Authorization/Profile.vue';
 import Logout from '@/components/Authorization/Logout.vue';
+import ForgotPassword from '@/components/Authorization/ForgotPassword.vue';
+import ResetPassword from '@/components/Authorization/ResetPassword.vue';
+
+const auth = computed(() => store.getters.authenticated);
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: Home,
-    meta: {
-      authRequired: 'false',
-    },
   },
   {
     path: '/job-list',
@@ -31,6 +34,11 @@ const routes = [
     component: Login,
   },
   {
+    path: '/auth/profile',
+    name: 'profile',
+    component: Profile,
+  },
+  {
     path: '/auth/register',
     name: 'register',
     component: Register,
@@ -41,11 +49,21 @@ const routes = [
     component: Logout,
   },
   {
+    path: '/auth/forgot-password',
+    name: 'forgotPassword',
+    component: ForgotPassword,
+  },
+  {
+    path: '/auth/reset-password/:id/:token',
+    name: 'resetPassword',
+    component: ResetPassword,
+  },
+  {
     path: '/job-list/:id',
     name: 'jobDetails',
     component: JobListCardDetails,
     meta: {
-      authRequired: 'true',
+      authRequired: true,
     },
   },
   {
@@ -60,8 +78,16 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.requiresAuth) next('/auth/login');
-//   else next();
-// });
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    if (auth.value) {
+      next();
+    } else {
+      next('/auth/login');
+    }
+  } else {
+    next();
+  }
+});
+
 export default router;

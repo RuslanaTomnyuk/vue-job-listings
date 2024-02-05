@@ -4,13 +4,19 @@ import bcrypt from 'bcrypt';
 import { getUserByEmail } from '../../helpers/getUserByEmail';
 import { AppDataSource } from '../../data-source';
 import { UserToken } from '../../entity/UserToken';
+import { loginSchema } from '../../validationSchemas/loginSchema';
 
 export const loginUser = async (
   req: Request,
   res: Response
 ) => {
   try {
-    // do validation for login
+    const { error } = loginSchema.validate(req.body);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+    
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -31,14 +37,12 @@ export const loginUser = async (
 
     const { password: userPassword, confirmPassword, ...userData } = user;
 
-    // if user exists - validate password
     const isPasswordValid = await bcrypt.compare(password, userPassword);
 
     const payload = { id: user.id, email: user.email };
-    // console.log('payload -login', payload);
 
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: '30s',
+      expiresIn: '10m',
     });
 
     const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
@@ -60,6 +64,7 @@ export const loginUser = async (
           maxAge: 24 * 60 * 60 * 1000,
         })
         .json({
+          status: 200,
           error: false,
           accessToken,
           message: 'Logged in successfully',

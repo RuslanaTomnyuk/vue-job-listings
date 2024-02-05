@@ -3,11 +3,7 @@ function verifyRole(req, res, next) {
   try {
     const user = req.user; 
     const { role } = user;
-    console.log('role', role);
     
-    // extract the user role
-    // check if user has no advance privileges
-    // return an unathorized response
     if (role !== 'Admin') {
       return res.status(401).json({
         status: 'failed',

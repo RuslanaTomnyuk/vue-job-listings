@@ -16,6 +16,11 @@ const apiRouter = express.Router();
 app.use(express.json());
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+  res.contentType('application/json; charset=utf-8');
+  next();
+});
+
 app.use(
   cors({
     credentials: true,
@@ -23,10 +28,6 @@ app.use(
     allowedHeaders: [ 'Authorization', 'Content-Type' ],
   })
 );
-app.use((req, res, next) => {
-  res.contentType('application/json; charset=utf-8');
-  next();
-});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
