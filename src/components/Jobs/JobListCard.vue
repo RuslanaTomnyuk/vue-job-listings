@@ -62,6 +62,7 @@
           <app-button
             v-if="filter"
             :key="index"
+            with-job-actions
             :title="filter as string"
             :handle-click="() => handleAddToFilter ? handleAddToFilter(filter as string) : null"
           />

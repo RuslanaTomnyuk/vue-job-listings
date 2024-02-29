@@ -67,16 +67,7 @@
           </v-list>
           <v-list v-if="!auth">
             <v-list-item>
-              <div>{{ 'You are not Logged In' }}</div>
-              
-              <v-btn
-                color="teal-lighten-3"
-                variant="text"
-                to="/auth/profile"
-              >              
-                Profile
-              </v-btn>
-              
+              <div>{{ 'You are not Logged In' }}</div>              
               <v-btn
                 color="teal-lighten-3"
                 variant="text"
@@ -89,6 +80,13 @@
           <v-divider />
           <v-divider />
           <v-card-actions v-if="auth">
+            <v-btn
+              color="teal-lighten-3"
+              variant="text"
+              to="/auth/profile"
+            >              
+              Profile
+            </v-btn>
             <v-btn
               variant="text"
               color="teal-lighten-3"
@@ -111,12 +109,11 @@ import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import { useStore } from '@/composables/useStore.ts';
 import axiosClient from '@/configs/axios/axiosClient';
 
-const store = useStore()
+const store = useStore();
 const auth = computed(() => store.state.auth.authenticated);
-const fav = ref(true)
-const menu = ref(false)
-const user = computed(() => store.getters.user)
-
+const fav = ref(true);
+const menu = ref(false);
+const user = computed(() => store.getters.user);
 
 const logout = async() => {
   try {
@@ -124,7 +121,7 @@ const logout = async() => {
     localStorage.removeItem('user-data');
     axiosClient.defaults.headers.common['Authorization'] = '';
 
-    await router.push('/auth/login')
+    await router.push('/auth/login');
   } catch (error) {
     console.log('Error while logging out', error);
   }

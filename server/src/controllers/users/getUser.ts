@@ -8,6 +8,7 @@ export const getUser = async (req, res: Response) => {
 
     if (!user) {
       return res.status(404).json({
+        error: true,
         message: 'User not found!',
       });
     }

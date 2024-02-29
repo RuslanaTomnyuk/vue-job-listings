@@ -5,7 +5,7 @@
         v-model="formData.email"
         prepend-inner-icon="mdi-email"
         :label="$t('login.email')"
-        :rules="[validationRules.email, validationRules.required]"
+        :rules="[validateRules.email, validateRules.required]"
         variant="solo"
         persistent-hint
         density="compact"              
@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
-import { validationRules } from '../../helpers/validationRules';
+import { validateRules } from '../../helpers/validationRules';
 import axiosClient from '@/configs/axios/axiosClient';
 import errorHandler from '@/services/errorHandler';
 import { AxiosError } from 'axios';

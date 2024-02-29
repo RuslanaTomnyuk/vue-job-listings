@@ -6,17 +6,17 @@ import { AppDataSource } from '../../data-source';
 import { UserToken } from '../../entity/UserToken';
 import { loginSchema } from '../../validationSchemas/loginSchema';
 
-export const loginUser = async (
-  req: Request,
-  res: Response
-) => {
+export const loginUser = async (req: Request, res: Response) => {
   try {
     const { error } = loginSchema.validate(req.body);
 
     if (error) {
-      throw new Error(error.message);
+      return res.status(401).json({
+        error: true,
+        message: error.message,
+      });
     }
-    
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -28,8 +28,7 @@ export const loginUser = async (
     const user = await getUserByEmail({ email });
 
     if (!user) {
-      // Unauthorized access
-      return res.status(401).json({
+      return res.status(404).json({
         error: 'User not found',
         message: 'Account does not exist',
       });
@@ -71,7 +70,7 @@ export const loginUser = async (
           userData,
         });
     } else {
-      res.status(401).json({
+      return res.status(401).json({
         error: true,
         message:
           'Invalid email or password. Please try again with the correct credentials.',

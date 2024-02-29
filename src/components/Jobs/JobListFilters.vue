@@ -9,6 +9,7 @@
         :key="jobFilter"
         with-close
         :with-hover="withHover"
+        with-job-actions
         :with-left-border-radius="withLeftBorderRadius"
         :title="jobFilter"
         :handle-click="() => handleRemove(jobFilter)"

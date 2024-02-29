@@ -18,6 +18,7 @@
               <br>
             </h2>
             <app-button
+              with-job-actions
               class="not-found__button"
               :title="$t('notFound.goHome')"
               :handle-click="() => router.push({name: 'home'})"

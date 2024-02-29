@@ -10,7 +10,7 @@ let refresh = false;
 axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response.status === 401 && !refresh) {
+    if (error.response?.status === 401 && !refresh) {
       refresh = true;
       const response = await axiosClient.post(
         '/auth/refresh-token',
@@ -24,7 +24,7 @@ axiosClient.interceptors.response.use(
         return response.statusText;
       }
 
-      if (response.status === 200) {
+      if (response?.status === 200) {
         storeAccessToken(response.data.accessToken);
 
         return axiosClient(error.config);

@@ -14,7 +14,7 @@
               v-model="formData.email"
               prepend-inner-icon="mdi-email"
               :label="$t('login.email')"
-              :rules="[validationRules.email, validationRules.required]"
+              :rules="[validateRules.email, validateRules.required]"
               variant="solo"
               persistent-hint
               density="compact"              
@@ -24,7 +24,7 @@
               :label="$t('login.password')"
               :type="passwordFieldType"
               variant="solo"
-              :rules="[validationRules.password, validationRules.required]"
+              :rules="[validateRules.password, validateRules.required]"
               prepend-inner-icon="mdi-key"
               density="compact"
               :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
@@ -66,7 +66,7 @@
 import { reactive, computed, ref } from 'vue';
 import router from '@/router/router';
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
-import { validationRules } from '../../helpers/validationRules';
+import { validateRules } from '../../helpers/validationRules';
 import loginUser from '@/services/loginUser';
 import errorHandler from '@/services/errorHandler';
 import { AxiosError } from 'axios';
@@ -92,13 +92,13 @@ const passwordFieldType = computed(() => showPassword.value ? 'text' : 'password
 
 const submit = async () => {
   try {
-    const email = formData.email;
-    const password = formData.password;
+    const { email, password } = formData;
+    if (!email || !password) {
+      throw new Error('All fields are required!');
+    }
 
-    await loginUser(email, password)
-
-    await router.push('/')
-    // }
+    await loginUser(email, password);
+    await router.push('/');
   } catch (error) {
     console.log('error while login', error)
     errorHandler(error as AxiosError);

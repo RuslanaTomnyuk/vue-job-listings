@@ -11,15 +11,18 @@ const loginUser = async (email: string, password: string) => {
       }
     );
 
-    if (data && data.status === 200) {
-      localStorage.setItem('user-data', JSON.stringify(data.userData));
+    if (data?.status === 200) {
+      localStorage.setItem(
+        'user-data',
+        JSON.stringify(data?.userData)
+      );
 
-      await store.dispatch('user', data.userData);
+      await store.dispatch('user', data?.userData);
       await store.dispatch('setAuth', true);
     }
   } catch (error: any) {
     await store.dispatch('setAuth', false);
-    throw new Error('Error logging user', error);
+    console.log('Error logging user', error);
   }
 };
 

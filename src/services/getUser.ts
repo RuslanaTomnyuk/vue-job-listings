@@ -3,16 +3,16 @@ import store from '@/store';
 
 const getUser = async () => {
   try {
-    const { data } = await axiosClient.get('/user', {
+    const response = await axiosClient.get('/user', {
       withCredentials: true,
     });
 
     await store.dispatch('setAuth', true);
 
-    return data;
+    return response?.data;
   } catch (error: any) {
     await store.dispatch('setAuth', false);
-    throw new Error('Error getting user', error);
+    console.log('Error getting user', error);
   }
 };
 

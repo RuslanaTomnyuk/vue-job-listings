@@ -14,9 +14,10 @@ export const deleteUser = async (
     const userRole = 'Admin';
 
     if (userRole !== 'Admin') {
-      return res
-        .status(403)
-        .json({ error: 'Forbidden: Only Admin users can delete a user.' });
+      return res.status(403).json({
+        error: true,
+        message: 'Forbidden: Only Admin users can delete a user.',
+      });
     }
 
     const userId = +req.params.id;

@@ -1,4 +1,10 @@
-export const errorsHandler = (err, req, res) => {
+import { NextFunction, Request, Response } from 'express';
+
+export const errorsHandler = (err: any, _request: Request, response: Response, _next: NextFunction) => {
   console.error(err.stack);
-  res.status(500).send(err.message);
+  response.status(500).json({
+    error: true,
+    code: 500,
+    message: err.message,
+  });
 };

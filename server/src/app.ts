@@ -9,6 +9,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import { authMiddleware } from './middlewares/authMiddleware';
 import { errorsHandler } from './middlewares/errorsHandler';
+import notFoundHandler from './middlewares/notFoundHandler';
 
 const app = express();
 const apiRouter = express.Router();
@@ -40,5 +41,6 @@ apiRouter.use('', authMiddleware, usersRouter);
 apiRouter.use('/job-list', authMiddleware, jobsRouter);
 
 app.use(errorsHandler);
+app.use(notFoundHandler);
 
 export default app;

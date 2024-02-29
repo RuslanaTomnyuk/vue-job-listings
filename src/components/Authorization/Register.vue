@@ -13,7 +13,7 @@
             <v-text-field
               v-model="formData.username"
               :label="$t('register.username')"
-              :rules="[validationRules.required]"
+              :rules="[validateRules.required]"
               density="compact"
               variant="solo"
             />
@@ -21,7 +21,7 @@
               v-model="formData.email"
               prepend-inner-icon="mdi-email"
               :label="$t('register.email')"
-              :rules="[validationRules.email, validationRules.required]"
+              :rules="[validateRules.email, validateRules.required]"
               variant="solo"
               persistent-hint
               density="compact"              
@@ -31,7 +31,7 @@
               :label="$t('register.password')"
               :type="passwordFieldType"
               variant="solo"
-              :rules="[validationRules.password, validationRules.required]"
+              :rules="[validateRules.password, validateRules.required]"
               prepend-inner-icon="mdi-key"
               density="compact"
               :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
@@ -42,7 +42,7 @@
               :label="$t('register.confirmPassword')"
               :type="confirmPasswordFieldType"
               variant="solo"
-              :rules="[validationRules.confirmPassword, validationRules.required]"
+              :rules="[validateRules.confirmPassword, validateRules.required]"
               prepend-inner-icon="mdi-key"
               density="compact"
               :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
@@ -77,7 +77,7 @@
 import { reactive, computed, ref } from 'vue';
 import router from '@/router/router';
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
-import { validationRules } from '../../helpers/validationRules';
+import { validateRules } from '../../helpers/validationRules';
 import axiosClient from '@/configs/axios/axiosClient';
 
 interface RegisterProps {

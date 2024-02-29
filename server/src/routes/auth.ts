@@ -7,8 +7,8 @@ import * as deleteRefreshTokenController from '../controllers/auth/deleteRefresh
 import * as changePasswordController from '../controllers/auth/changePassword';
 import * as resetPasswordController from '../controllers/auth/resetPassword';
 import * as forgotPasswordController from '../controllers/auth/forgotPassword';
+import * as profileController from '../controllers/users/updateUser';
 import { authMiddleware } from '../middlewares/authMiddleware';
-
 export const authRouter = express.Router();
 
 authRouter.patch(
@@ -22,6 +22,7 @@ authRouter.delete(
   '/refresh-token',
   deleteRefreshTokenController.deleteRefreshToken
 );
+authRouter.patch('/profile', authMiddleware, profileController.updateUser);
 authRouter.patch(
   '/change-password',
   authMiddleware,

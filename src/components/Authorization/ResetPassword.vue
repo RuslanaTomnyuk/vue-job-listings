@@ -12,7 +12,7 @@
               :label="$t('login.password')"
               type="password"
               variant="solo"
-              :rules="[validationRules.password, validationRules.required]"
+              :rules="[validateRules.password, validateRules.required]"
               prepend-inner-icon="mdi-key"
               density="compact"
             />
@@ -21,7 +21,7 @@
               :label="$t('register.confirmPassword')"
               type="password"
               variant="solo"
-              :rules="[validationRules.confirmPassword, validationRules.required]"
+              :rules="[validateRules.confirmPassword, validateRules.required]"
               prepend-inner-icon="mdi-key"
               density="compact"
             />
@@ -47,7 +47,7 @@ import { reactive } from 'vue';
 import router from '@/router/router';
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
 import axiosClient from '@/configs/axios/axiosClient';
-import { validationRules } from '../../helpers/validationRules';
+import { validateRules } from '../../helpers/validationRules';
 import { useRoute } from 'vue-router';
 import { storeAccessToken } from '../../helpers/storeAccessToken'; 
 import { AxiosError } from 'axios';

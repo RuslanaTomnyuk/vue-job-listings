@@ -1,13 +1,12 @@
-import { Request, Response } from 'express';
-import * as updateUserService from '../../services/users/updateUser';
+import { Response } from 'express';
+import * as editUserService from '../../services/users/editUser';
 import { getUserById } from '../../helpers/getUserById';
 import { updateUserSchema } from '../../validationSchemas/updateUserSchema';
 import bcrypt from 'bcrypt';
+import { sendEMail } from '../../config/nodemail';
+import { getUserByEmail } from '../../helpers/getUserByEmail';
 
-export const updateUser = async (
-  req: Request,
-  res: Response
-) => {
+export const updateUser = async (req, res: Response) => {
   try {
     const { error } = updateUserSchema.validate(req.body);
 
@@ -15,48 +14,72 @@ export const updateUser = async (
       throw new Error(error.message);
     }
 
-    const { username, password, confirmPassword, role } = req.body;
-    const userId = +req.params.id;
+    const userId = +req.user.id;
 
-    if (!username || !password || !confirmPassword) {
-      return res.sendStatus(400);
-    }
+    const { username, email, password } = req.body;
 
-    if (password !== confirmPassword) {
-      res.status(400).json({
+    const existedEmailInDB = await getUserByEmail({ email });
+
+    if (existedEmailInDB && userId !== existedEmailInDB.id) {
+      return res.status(400).json({
         status: 400,
-        message: 'Password and ConfirmPassword do not match!',
+        message: 'That email is already registered',
       });
     }
 
-    const existingUser = await getUserById({ id: userId });
+    const userExists = await getUserById({ id: userId });
 
-    if (existingUser !== null) {
-      if (role !== 'Admin') {
+    if (!userExists) {
+      return res.status(404).json({
+        error: 'User not found',
+        message: 'We could not find the user with a given email',
+      });
+    }
+
+    const hasEmailChanged = email !== userExists.email;
+
+    const isPasswordValid = await bcrypt.compare(password, userExists.password);
+
+    if (!isPasswordValid) {
+      return res.status(400).json({
+        status: 400,
+        message: 'The current password you provided is not valid!',
+      });
+    }
+
+    const role = 'Admin';
+
+    if (userExists !== null) {
+      if (role === 'Admin') {
+        await editUserService.editUser(userId, username, email, userExists);
+
+        try {
+          const mailInfo = {
+            to: `${email}`,
+            subject: 'Email Verification ✔',
+            text: `Hello ${username}! There, You have recently
+           changed your email.
+           Thank you!`,
+          };
+
+          if (hasEmailChanged) {
+            sendEMail(mailInfo);
+          }
+        } catch (error) {
+          console.log('Error while sending email', error);
+        }
+
+        res.status(200).json({
+          status: 200,
+          error: false,
+          message: 'User updated Successfully',
+        });
+      } else {
         return res.status(403).json({
-          error: 'Forbidden: Only Admin users can update the user.',
+          error: true,
+          message: 'Forbidden: Only Admin users can update the user',
         });
       }
-
-      const hashedPassword = await bcrypt.hash(password, +process.env.SALT);
-      const hashedConfirmPassword = await bcrypt.hash(
-        confirmPassword,
-        +process.env.SALT
-      );
-
-      await updateUserService.updateUser(
-        userId,
-        username,
-        hashedPassword,
-        hashedConfirmPassword,
-        existingUser
-      );
-
-      res.status(200).json({
-        message: 'User updated Successfully',
-      });
-    } else {
-      return res.status(404).json({ error: 'Such user doesn\'t exist!' });
     }
   } catch (error) {
     console.error('Error updating user:', error);

@@ -1,61 +1,73 @@
 import { computed } from 'vue';
-import { AppValidationTypes } from '@/interfaces/enums';
-import { FORM_SYMBOLS_VALIDATION } from '@/constants/validation';
+import { AppValidationTypes } from '@/types/enums';
+// import { FORM_SYMBOLS_VALIDATION } from '@/constants/validation';
 
-export interface GetValidationRulesParams {
+interface ValidationRulesParams {
+  key: string;
   isRequired?: boolean;
   label?: string;
   validationType?: AppValidationTypes;
 }
 type AppValidationRule = (value: string | number) => boolean | string;
 
-export const useValidation = (props: GetValidationRulesParams) => {
+export const useValidation = (props: ValidationRulesParams) => {
   const validationRules = computed(() => {
     const validationRules: AppValidationRule[] = [];
 
-    if (props.isRequired) {
-      validationRules.push((value) => !!value || `${props.label} is required`);
+    validationRules.push((value) => !!value || `${props.label} is required`);
+
+    if (props.label === 'Name') {
+      validationRules.push(
+        (value) =>
+          !value ||
+          (value as string).trim().length >= 3 ||
+          `${props.label} must be at least 3 characters long`
+      );
     }
 
-    if (props.validationType) {
-      switch (props.validationType) {
-      case AppValidationTypes.email:
-        const emailRegExp =
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        validationRules.push(
-          (value) =>
-            !value ||
-              emailRegExp.test(value as string) ||
-              'E-mail must be valid'
-        );
-        break;
-      case AppValidationTypes.password:
-        validationRules.push(
-          (value) =>
-            !value ||
-              (value as string).trim().length >= 8 ||
-              'Password must be at least 8 characters long'
-        );
-        break;
-      case AppValidationTypes.confirmPassword:
-        validationRules.push(
-          (value) =>
-            !value ||
-              (value as string).trim().length >= 8 ||
-              'Confirm password must be at least 8 characters long and match the  password'
-        );
-        break;
-      default:
-        const regExp = FORM_SYMBOLS_VALIDATION[props.validationType];
-        if (regExp) {
-          validationRules.push(
-            (value) =>
-              !value ||
-                regExp.exp.test(value as string) ||
-                `Allowed symbols: ${regExp.text}`
-          );
-        }
-      }
+    if (props.label === 'Email') {
+      const emailRegExp =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      validationRules.push(
+        (value) =>
+          emailRegExp.test(value as string) || `${props.label} must be valid`
+      );
+    }
+
+    if (props.label === 'Password') {
+      validationRules.push(
+        (value) =>
+          !value ||
+          (value as string).trim().length >= 8 ||
+          `${props.label} must be at least 8 characters long`
+      );
+    }
+
+    if (props.label === 'Current Password') {
+      validationRules.push(
+        (value) =>
+          !value ||
+          (value as string).trim().length >= 8 ||
+          `${props.label} must be at least 8 characters long`
+      );
+    }
+
+    if (props.label === 'New Password') {
+      validationRules.push(
+        (value) =>
+          !value ||
+          (value as string).trim().length >= 8 ||
+          `${props.label} must be at least 8 characters long`
+      );
+    }
+
+    if (props.label === 'Confirm New Password') {
+      validationRules.push(
+        (value) =>
+          !value ||
+          (value as string).trim().length >= 8 ||
+          `${props.label} must be at least 8 characters long and match the password`
+      );
     }
 
     return validationRules;

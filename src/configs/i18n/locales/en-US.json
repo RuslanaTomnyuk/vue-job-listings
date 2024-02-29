@@ -40,8 +40,19 @@
     "confirmPassword": "Confirm Your Password",
     "username": "User name",
     "role": "Role",
-    
     "completeRegistration": "Complete Registration"
+  },
+    "profile": {
+    "edit": "Edit Profile",
+    "changePassword": "Change Password",
+    "name": "Name",
+    "email": "Email",
+    "submit": "Submit",
+    "password": "Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "saveChanges": "Save Changes"
   },
   "notFound": {
     "goHome": "Go back home"

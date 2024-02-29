@@ -1,6 +1,7 @@
 <template>
   <div class="button">
     <button
+      v-if="withJobActions"
       :class="{'button__title': true, 'button__title--with-hover': withHover, 'button__title--with-left-border-radius': withLeftBorderRadius}"
       type="button"
       @click.stop="() => handleClick(title)"
@@ -14,6 +15,16 @@
     >
       X
     </button>
+    <v-card-actions v-if="withActions">
+      <v-btn
+        v-if="withActions"                  
+        variant="outlined"
+        color="teal-lighten-3"
+        @click.stop="handleClick"
+      >
+        {{ title }}
+      </v-btn>
+    </v-card-actions>
   </div>
 </template>
 
@@ -23,6 +34,8 @@ interface AppButtonProps {
   withText?: string;
   withClose?: boolean;
   withHover?: boolean;
+  withActions?: boolean;
+  withJobActions?: boolean;
   withLeftBorderRadius: boolean;
   handleClick: (jobFilter: MouseEvent | string) => void;
 }

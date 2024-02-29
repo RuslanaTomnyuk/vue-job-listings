@@ -10,10 +10,12 @@
       <app-button
         :title="$t('jobListCardDetails.back')"
         :handle-click="() => router.back()"
+        with-job-actions
       />
       <app-button
         :title="$t('jobListCardDetails.home')"
         :handle-click="() => router.push({ name: 'home' })"
+        with-job-actions
       />
     </div>
   </app-main-layout>
