@@ -3,7 +3,7 @@ import { AppValidationTypes } from '@/types/enums';
 // import { FORM_SYMBOLS_VALIDATION } from '@/constants/validation';
 
 interface ValidationRulesParams {
-  key: string;
+  key?: string;
   isRequired?: boolean;
   label?: string;
   validationType?: AppValidationTypes;
@@ -75,3 +75,4 @@ export const useValidation = (props: ValidationRulesParams) => {
 
   return { validationRules };
 };
+

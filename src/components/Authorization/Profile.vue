@@ -156,6 +156,11 @@ const editProfileHandler = async () => {
 const changePasswordHandler = async () => {
   try {
     const { password: currentPassword, newPassword: password, confirmNewPassword: confirmPassword } = formData;
+    
+    if (!currentPassword || !password || !confirmPassword) {
+      throw new Error('All fields are required!')
+    }
+
     const response = await axiosClient.patch('/auth/change-password', { currentPassword, password, confirmPassword });
 
     if (response?.data?.status === 200) {            
