@@ -19,6 +19,8 @@ import router from '@/router/router';
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
 import axiosClient from '@/configs/axios/axiosClient';
 import { useStore } from '@/composables/useStore.ts';
+import { useToast } from 'vue-toastification';
+import { ToastContent } from 'vue-toastification/dist/types/types';
 
 interface LogoutProps {
   withHover?: boolean;
@@ -27,6 +29,7 @@ interface LogoutProps {
 defineProps<LogoutProps>()
 
 const store = useStore()
+const toast = useToast();
 
 const logout = async() => {
   try {
@@ -40,6 +43,7 @@ const logout = async() => {
     await router.push('/auth/login')
   } catch (error) {
     console.log('Error while logging out', error);
+    toast.error(error as ToastContent);
   }
 }
 

@@ -1,9 +1,10 @@
 import store from '@/store';
 import axiosClient from '@/configs/axios/axiosClient.ts';
+import { storeAccessToken } from '@/helpers/storeAccessToken';
 
 const loginUser = async (email: string, password: string) => {
   try {
-    const { data } = await axiosClient.post(
+    const response = await axiosClient.post(
       '/auth/login',
       { email, password },
       {
@@ -11,13 +12,14 @@ const loginUser = async (email: string, password: string) => {
       }
     );
 
-    if (data?.status === 200) {
+    if (response?.data?.status === 200) {
+      storeAccessToken(response?.data.accessToken);
       localStorage.setItem(
         'user-data',
-        JSON.stringify(data?.userData)
+        JSON.stringify(response?.data?.userData)
       );
 
-      await store.dispatch('user', data?.userData);
+      await store.dispatch('user', response?.data?.userData);
       await store.dispatch('setAuth', true);
     }
   } catch (error: any) {

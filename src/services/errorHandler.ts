@@ -14,7 +14,6 @@ const errorHandler = (err: AxiosError) => {
   } else if (err?.response?.status === 404) {
     toast.error(err?.response?.data?.message || err.message);
   } else {
-    console.log('AxiosError', err);
     toast.error(errorMessage);
   }
 };

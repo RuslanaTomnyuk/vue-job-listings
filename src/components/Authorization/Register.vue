@@ -80,12 +80,6 @@ import AppMainLayout from '@/layouts/AppMainLayout.vue';
 import { validateRules } from '../../helpers/validationRules';
 import axiosClient from '@/configs/axios/axiosClient';
 
-interface RegisterProps {
-  withHover?: boolean;
-}
-
-defineProps<RegisterProps>()
-
 interface FormData {
   username: string,
   email: string,
@@ -117,15 +111,14 @@ const submitRegistration = async () => {
 
     const response = await axiosClient.post('/auth/register', { username, email, password, confirmPassword, role }, { withCredentials: true });
 
-    if (response.data.status === 201) {
+    if (response?.status === 201) {
       router.push('/auth/login')
     }
 
     return response.data;
-  } catch (error: unknown) {
-    throw new Error('error');
+  } catch (error: any) {
+    throw new Error('error', error);
   }
-
 }
 </script>
 

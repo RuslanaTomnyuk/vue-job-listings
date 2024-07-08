@@ -55,8 +55,6 @@ import JobListCard from '@/components/Jobs/JobListCard.vue';
 import JobListInput from '@/components/Jobs/JobListInput.vue';
 import { useStore } from '@/composables/useStore.ts';
 import { useDebounce } from '@/composables/useDebounce';
-import getUser from '@/services/getUser';
-
 
 const store = useStore()
 const jobs = computed(() => store.state.jobs)
@@ -93,7 +91,7 @@ const filteredCards = computed(() => searchText.value.length ? filteredByInputSe
 
 
 onMounted(async () => {
-  await getUser();
+  // await getUser();
   await store.dispatch('fetchJobList');
 })
 </script>

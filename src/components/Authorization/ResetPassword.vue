@@ -50,19 +50,12 @@ import axiosClient from '@/configs/axios/axiosClient';
 import { validateRules } from '../../helpers/validationRules';
 import { useRoute } from 'vue-router';
 import { storeAccessToken } from '../../helpers/storeAccessToken'; 
-import { AxiosError } from 'axios';
 import errorHandler from '@/services/errorHandler';
 import { useToast } from 'vue-toastification';
 
-interface LoginProps {
-  withHover?: boolean;
-}
-
-defineProps<LoginProps>()
-
 const route = useRoute();
 const token = route.params.token;
-const id = +route.params.id
+const id = +route.params.id;
 
 interface FormData {
   password: string,
@@ -81,17 +74,21 @@ const submit = async () => {
     const password = formData.password;
     const confirmPassword = formData.confirmPassword;
 
-    const { data } = await axiosClient.patch(`/auth/reset-password/${id}/${token}`, { password, confirmPassword });
+    if (JSON.stringify(password) !== JSON.stringify(confirmPassword)) {
+      toast.error('Password and Confirm Password should match');
+    } else {
+      const response = await axiosClient.patch(`/auth/reset-password/${id}/${token}`, { password });
 
-    if (data?.status === 200) {            
-      storeAccessToken(data.token);
-      toast.success(data.message);
+      if (response?.data?.status === 200) {
+        storeAccessToken(response?.data.token);
+        toast.success(response?.data.message);
 
-      await router.push('/')
+        await router.push('/')
+      }
     }
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.log('error while resetting password', error)
-    errorHandler(error as AxiosError)
+    errorHandler(error)
   }
 }
 </script>

@@ -5,7 +5,7 @@
       placeholder="Search..."
       type="search"
       class="container__input"
-      @input="$emit('update:modelValue', $event.target.value)"
+      @input="$emit('update:modelValue', $event.target?.value)"
     >
   </div>
 </template>

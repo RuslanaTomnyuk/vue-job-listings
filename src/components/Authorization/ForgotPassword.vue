@@ -24,6 +24,8 @@
 </template>
 
 <script setup lang="ts">
+
+import router from '@/router/router';
 import { reactive } from 'vue';
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
 import { validateRules } from '../../helpers/validationRules';
@@ -44,12 +46,13 @@ const toast = useToast();
 
 const submit = async () => { 
   try {
-    const { data } = await axiosClient.post('/auth/forgot-password', { email: formData.email }, {
+    const response = await axiosClient.post('/auth/forgot-password', { email: formData.email }, {
       withCredentials: true,
     });
 
-    if(data.status === 200){
-      toast.success(data.message)
+    if (response?.data?.status === 200) {
+      toast.success(response.data.message);
+      router.push('/auth/login');
     } 
   } catch (error) {
     console.error(error);

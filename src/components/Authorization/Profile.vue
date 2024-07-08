@@ -66,8 +66,8 @@ import AppFormContainer from '../AppFormContainer.vue';
 import AppButton from '../AppButton.vue';
 import i18n from '@/configs/i18n/i18n';
 import axiosClient from '@/configs/axios/axiosClient';
-import { storeAccessToken } from '@/helpers/storeAccessToken';
 import { useToast } from 'vue-toastification';
+import errorHandler from '@/services/errorHandler';
 
 const toast = useToast();
 const tabItems = computed(() => [
@@ -85,6 +85,7 @@ interface FormDataForm {
   username: string,
   email: string,
   password: string,
+  currentPassword: string,
   newPassword: string,
   confirmNewPassword: string,
 }
@@ -93,6 +94,7 @@ const formData = reactive<FormDataForm>({
   username: user.value.username,
   email: user.value.email,
   password: '',
+  currentPassword: '',
   newPassword: '',
   confirmNewPassword: '',
 })
@@ -148,28 +150,31 @@ const editProfileHandler = async () => {
     if (response?.data?.status === 200) {            
       toast.success(response?.data.message);
     }
-  } catch (error) {
-    console.log('error while editing user profile', error)
+  } catch (error: any) {
+    console.log('error while editing user profile', error);
+    errorHandler(error);
   }
 };
 
 const changePasswordHandler = async () => {
   try {
-    const { password: currentPassword, newPassword: password, confirmNewPassword: confirmPassword } = formData;
+    const { currentPassword, newPassword: password, confirmNewPassword: confirmPassword } = formData;
     
     if (!currentPassword || !password || !confirmPassword) {
       throw new Error('All fields are required!')
     }
 
-    const response = await axiosClient.patch('/auth/change-password', { currentPassword, password, confirmPassword });
+    if (JSON.stringify(password) !== JSON.stringify(confirmPassword)) {
+      toast.error('New Password and Confirm New Password should match');
+    } else {
+      const response = await axiosClient.patch('/auth/change-password', { currentPassword, password });
 
-    if (response?.data?.status === 200) {            
-      storeAccessToken(response?.data.token);
-      toast.success(response?.data.message);
+      if (response?.data.statusCode === 201) {
+        toast.success(response?.data.message);
 
-      await router.push('/')
+        await router.push('/auth/login')
+      }
     }
-    
   } catch (error) {
     console.log('error while changing password', error)
   }
