@@ -36,6 +36,8 @@ const logout = async() => {
     await axiosClient.get('/auth/logout', { withCredentials: true });
 
     localStorage.removeItem('user-data');
+    localStorage.removeItem('auth-token');
+
     axiosClient.defaults.headers.common['Authorization'] = '';
 
     await store.dispatch('setAuth', false)

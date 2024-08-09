@@ -14,8 +14,7 @@ const auth: Module<AuthStoreState, RootStoreState> = {
     SET_AUTH: (state, authenticated) => (state.authenticated = authenticated),
   },
   actions: {
-    setAuth: (context, authenticated) =>
-      context.commit('SET_AUTH', authenticated),
+    setAuth: ({ commit }, authenticated) => commit('SET_AUTH', authenticated),
   },
 };
 

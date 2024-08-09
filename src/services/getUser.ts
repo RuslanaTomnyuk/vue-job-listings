@@ -12,6 +12,9 @@ const getUser = async () => {
     return response?.data;
   } catch (error: any) {
     await store.dispatch('setAuth', false);
+    localStorage.removeItem('auth-token');
+    localStorage.removeItem('user-data');
+    delete axiosClient.defaults.headers.common['Authorization'];
     console.log('Error getting user', error);
   }
 };

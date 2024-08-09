@@ -16,7 +16,14 @@ const options = {
   timeout: 1500,
 };
 
-// globalErrorHandler(app);
+globalErrorHandler(app);
+
+const token = localStorage.getItem('auth-token');
+if (token) {
+  store.dispatch('setAuth', true);
+} else {
+  store.dispatch('setAuth', false);
+}
 
 app
   .use(router)

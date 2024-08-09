@@ -12,8 +12,6 @@ import Logout from '@/components/Authorization/Logout.vue';
 import ForgotPassword from '@/components/Authorization/ForgotPassword.vue';
 import ResetPassword from '@/components/Authorization/ResetPassword.vue';
 
-const auth = computed(() => store.getters.authenticated);
-
 const routes = [
   {
     path: '/',
@@ -82,12 +80,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth) {
-    if (auth.value) {
-      next();
-    } else {
-      next('/auth/login');
-    }
+  const isAuthenticated = store.getters.authenticated;
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next('/auth/login');
   } else {
     next();
   }

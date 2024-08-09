@@ -2,6 +2,7 @@ import axiosClient from '@/configs/axios/axiosClient';
 
 export const storeAccessToken = (token: string) => {
   try {
+    localStorage.setItem('auth-token', token);
     axiosClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     return token;
   } catch (error) {

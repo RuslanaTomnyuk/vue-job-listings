@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import router from '@/router/router.ts';
-
+import axiosClient from '@/configs/axios/axiosClient';
 import AppMainLayout from '@/layouts/AppMainLayout.vue';
 import AppContainer from '../AppContainer.vue';
 import AppLoader from '../AppLoader.vue';
@@ -91,8 +91,21 @@ const filteredCards = computed(() => searchText.value.length ? filteredByInputSe
 
 
 onMounted(async () => {
-  // await getUser();
-  await store.dispatch('fetchJobList');
+  const token = localStorage.getItem('auth-token');
+  const userDataLS = localStorage.getItem('user-data');
+
+  if (!token) {
+    router.push('/auth/login');
+    return;
+  }
+  axiosClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+  const userData = userDataLS ? JSON.parse(userDataLS) : null;
+
+  if (userData && userData.id) {
+    await store.dispatch('setAuth', true);
+    await store.dispatch('fetchJobList');
+  }
 })
 </script>
 
